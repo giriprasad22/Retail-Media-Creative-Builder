@@ -55,21 +55,8 @@ try:
     print(f"📂 Open http://localhost:{port} in your browser")
     print("="*60 + "\n")
     
-    # Use gunicorn in production (Railway), Flask dev server locally
-    if os.environ.get('RAILWAY_ENVIRONMENT') or os.environ.get('PORT'):
-        # Production - use gunicorn
-        import subprocess
-        subprocess.run([
-            "gunicorn",
-            "--chdir", "backend",
-            "app.main:app",
-            "--bind", f"0.0.0.0:{port}",
-            "--workers", "2",
-            "--timeout", "120"
-        ])
-    else:
-        # Local development - use Flask
-        app.run(host='0.0.0.0', port=port, debug=True, use_reloader=False)
+    # Run Flask development server (local only)
+    app.run(host='0.0.0.0', port=port, debug=True, use_reloader=False)
     
 except KeyboardInterrupt:
     print("\n\n👋 Server stopped. Goodbye!")
