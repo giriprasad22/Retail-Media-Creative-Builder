@@ -1,5 +1,5 @@
 [phases.setup]
-aptPkgs = ["libgl1", "libglib2.0-0", "libsm6", "libxext6", "libxrender1", "libgomp1", "ffmpeg", "libglu1-mesa"]
+aptPkgs = ["libgl1", "libglib2.0-0", "libglx0", "libglvnd0", "libegl1", "libsm6", "libxext6", "libxrender1", "libgomp1", "ffmpeg"]
 
 [start]
 cmd = "python run.py"
