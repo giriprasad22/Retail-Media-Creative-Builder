@@ -134,13 +134,21 @@ def editor():
 @app.route('/css/<path:filename>')
 def serve_css(filename):
     """Serve CSS files."""
-    return send_from_directory(str(FRONTEND_DIR / "css"), filename)
+    try:
+        return send_from_directory(str(FRONTEND_DIR / "css"), filename)
+    except Exception as e:
+        logger.error(f"Failed to serve CSS file {filename}: {e}")
+        return '', 404
 
 
 @app.route('/js/<path:filename>')
 def serve_js(filename):
     """Serve JavaScript files."""
-    return send_from_directory(str(FRONTEND_DIR / "js"), filename)
+    try:
+        return send_from_directory(str(FRONTEND_DIR / "js"), filename)
+    except Exception as e:
+        logger.error(f"Failed to serve JS file {filename}: {e}")
+        return '', 404
 
 
 @app.route('/uploads/<path:filename>')
@@ -877,13 +885,30 @@ def remove_background():
                 }), 400
             
             file = request.files['file']
-            model = request.form.get('model', 'u2net')
-            alpha_matting = request.form.get('alpha_matting', 'false').lower() == 'true'
+            # Use lighter model for cloud deployment (Railway has limited RAM)
+            model = request.form.get('model', 'u2net_human_seg')  # Lighter than u2net
+            # Disable alpha matting to save memory
+            alpha_matting = False
             
-            # Read file and convert to base64
+            # Read file and optimize for Railway's limited memory
             try:
                 file_bytes = file.read()
-                image_input = base64.b64encode(file_bytes).decode('utf-8')
+                
+                # Resize large images to reduce memory usage
+                img = Image.open(io.BytesIO(file_bytes))
+                
+                # Limit max dimension to 2048px to prevent OOM errors
+                max_size = 2048
+                if img.width > max_size or img.height > max_size:
+                    ratio = min(max_size / img.width, max_size / img.height)
+                    new_size = (int(img.width * ratio), int(img.height * ratio))
+                    img = img.resize(new_size, Image.Resampling.LANCZOS)
+                    logger.info(f"Resized image from {file_bytes.__sizeof__()} to {new_size} for memory optimization")
+                
+                # Convert back to base64
+                buffer = io.BytesIO()
+                img.save(buffer, format='PNG')
+                image_input = base64.b64encode(buffer.getvalue()).decode('utf-8')
             except Exception as e:
                 return jsonify({
                     "success": False,
@@ -891,13 +916,14 @@ def remove_background():
                 }), 400
         
         try:
-            service = BackgroundRemovalService(model=model)
+            # Use lighter model for Railway deployment
+            service = BackgroundRemovalService(model='u2net_human_seg')
             
-            # Remove background (synchronous method)
+            # Remove background with memory-optimized settings
             result = service.remove_background(
                 image_input=image_input,
-                alpha_matting=alpha_matting,
-                post_process=True,
+                alpha_matting=False,  # Disable to save memory
+                post_process=False,    # Disable to save memory
                 add_shadow=False
             )
             
@@ -916,8 +942,20 @@ def remove_background():
                     "error": result.error or "Background removal failed"
                 }), 500
                 
+        except MemoryError as mem_err:
+            logger.error(f"Out of memory during background removal: {mem_err}")
+            return jsonify({
+                "success": False,
+                "error": "Image too large for server memory. Please use a smaller image (max 2048x2048)."
+            }), 507  # Insufficient Storage
         except Exception as e:
             logger.error(f"Background removal processing error: {e}")
+            # Check if it's a memory-related error
+            if 'memory' in str(e).lower() or 'allocation' in str(e).lower():
+                return jsonify({
+                    "success": False,
+                    "error": "Server memory limit exceeded. Please use a smaller image."
+                }), 507
             return jsonify({
                 "success": False,
                 "error": str(e)
