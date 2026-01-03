@@ -1,0 +1,445 @@
+/* 
+ * Tesco-Specific Styles
+ * Custom styles for Tesco brand elements and components
+ */
+
+/* Tesco brand colors */
+:root {
+    --tesco-blue: #0050AA;
+    --tesco-red: #EE1C2E;
+    --tesco-white: #FFFFFF;
+    --tesco-black: #000000;
+}
+
+/* Subsection titles */
+.subsection-title {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    margin: 1rem 0 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-weight: 600;
+}
+
+/* Tesco Validation Results */
+.tesco-validation-results {
+    background: var(--dark-card);
+    border-radius: 8px;
+    padding: 1rem;
+    margin-top: 1rem;
+}
+
+.validation-errors {
+    margin-bottom: 1rem;
+}
+
+.validation-errors h4 {
+    color: var(--error);
+    font-size: 0.9rem;
+    margin-bottom: 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.validation-errors ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.error-item {
+    background: rgba(239, 68, 68, 0.1);
+    border-left: 3px solid var(--error);
+    padding: 0.75rem;
+    margin-bottom: 0.5rem;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    line-height: 1.5;
+}
+
+.error-item strong {
+    color: var(--text-primary);
+    display: block;
+    margin-bottom: 0.25rem;
+}
+
+.error-item .suggestion {
+    margin-top: 0.5rem;
+    padding: 0.5rem;
+    background: rgba(99, 102, 241, 0.1);
+    border-radius: 3px;
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+}
+
+.validation-warnings {
+    margin-bottom: 1rem;
+}
+
+.validation-warnings h4 {
+    color: var(--warning);
+    font-size: 0.9rem;
+    margin-bottom: 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.validation-warnings ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.warning-item {
+    background: rgba(245, 158, 11, 0.1);
+    border-left: 3px solid var(--warning);
+    padding: 0.75rem;
+    margin-bottom: 0.5rem;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    line-height: 1.5;
+    color: var(--text-secondary);
+}
+
+.validation-success {
+    background: rgba(16, 185, 129, 0.1);
+    border: 1px solid var(--success);
+    padding: 1rem;
+    border-radius: 4px;
+    text-align: center;
+    color: var(--success);
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.validation-success i {
+    font-size: 1.2rem;
+}
+
+/* Tesco value tile preview styles */
+.tesco-value-tile {
+    background: var(--tesco-white);
+    color: var(--tesco-blue);
+    padding: 0.75rem 1rem;
+    border-radius: 4px;
+    font-weight: 700;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(0, 80, 170, 0.15);
+    border: 1px solid rgba(0, 80, 170, 0.2);
+}
+
+.tesco-value-tile.new {
+    font-size: 1rem;
+}
+
+.tesco-value-tile.white {
+    font-size: 1.5rem;
+}
+
+.tesco-value-tile.clubcard {
+    background: var(--tesco-blue);
+    color: var(--tesco-white);
+    font-size: 1.25rem;
+}
+
+.tesco-value-tile.clubcard .clubcard-label {
+    font-size: 0.75rem;
+    font-weight: 500;
+    margin-top: 0.25rem;
+}
+
+/* Tesco tag styles */
+.tesco-tag {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    text-align: center;
+    padding: 0.5rem;
+    background: rgba(100, 116, 139, 0.1);
+    border-radius: 4px;
+}
+
+/* Drinkaware compliance indicator */
+.drinkaware-indicator {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem;
+    background: rgba(239, 68, 68, 0.1);
+    border-left: 3px solid var(--error);
+    border-radius: 4px;
+    margin: 0.5rem 0;
+}
+
+.drinkaware-indicator i {
+    color: var(--error);
+}
+
+.drinkaware-indicator .text {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+}
+
+/* Tesco compliance warning */
+.tesco-compliance-warning {
+    background: rgba(245, 158, 11, 0.1);
+    border-left: 3px solid var(--warning);
+    padding: 0.75rem;
+    margin: 0.75rem 0;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+}
+
+.tesco-compliance-error {
+    background: rgba(239, 68, 68, 0.1);
+    border-left: 3px solid var(--error);
+    padding: 0.75rem;
+    margin: 0.75rem 0;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+}
+
+/* Tesco safe zone overlay */
+.tesco-safe-zone-overlay {
+    position: absolute;
+    pointer-events: none;
+    z-index: 1000;
+}
+
+.tesco-safe-zone-overlay.top {
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 200px;
+    background: rgba(239, 68, 68, 0.15);
+    border-bottom: 2px dashed var(--error);
+}
+
+.tesco-safe-zone-overlay.bottom {
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 250px;
+    background: rgba(239, 68, 68, 0.15);
+    border-top: 2px dashed var(--error);
+}
+
+.tesco-safe-zone-label {
+    position: absolute;
+    background: var(--error);
+    color: white;
+    padding: 0.25rem 0.5rem;
+    font-size: 0.7rem;
+    font-weight: 600;
+    border-radius: 3px;
+}
+
+.tesco-safe-zone-overlay.top .tesco-safe-zone-label {
+    bottom: 5px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.tesco-safe-zone-overlay.bottom .tesco-safe-zone-label {
+    top: 5px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+/* Tesco guideline panel */
+.tesco-guideline-item {
+    padding: 0.75rem;
+    background: var(--dark-card);
+    border-radius: 6px;
+    margin-bottom: 0.5rem;
+    border-left: 3px solid transparent;
+}
+
+.tesco-guideline-item.passed {
+    border-left-color: var(--success);
+}
+
+.tesco-guideline-item.warning {
+    border-left-color: var(--warning);
+}
+
+.tesco-guideline-item.failed {
+    border-left-color: var(--error);
+}
+
+.tesco-guideline-item .title {
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.tesco-guideline-item .description {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin-bottom: 0.5rem;
+}
+
+.tesco-guideline-item .status {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.8rem;
+}
+
+.tesco-guideline-item .status.passed {
+    color: var(--success);
+}
+
+.tesco-guideline-item .status.warning {
+    color: var(--warning);
+}
+
+.tesco-guideline-item .status.failed {
+    color: var(--error);
+}
+
+/* Tesco brand kit section */
+.tesco-brand-kit {
+    padding: 1rem;
+    background: var(--dark-card);
+    border-radius: 8px;
+    margin: 1rem 0;
+}
+
+.tesco-brand-kit .brand-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--dark-border);
+}
+
+.tesco-brand-kit .brand-logo {
+    width: 40px;
+    height: 40px;
+    background: var(--tesco-blue);
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: 700;
+}
+
+.tesco-brand-kit .brand-name {
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.tesco-brand-kit .color-row {
+    display: flex;
+    gap: 0.5rem;
+    margin: 0.5rem 0;
+}
+
+.tesco-brand-kit .color-swatch {
+    flex: 1;
+    height: 60px;
+    border-radius: 6px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.7rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.tesco-brand-kit .color-swatch:hover {
+    transform: scale(1.05);
+}
+
+.tesco-brand-kit .color-swatch.blue {
+    background: var(--tesco-blue);
+    color: white;
+}
+
+.tesco-brand-kit .color-swatch.red {
+    background: var(--tesco-red);
+    color: white;
+}
+
+.tesco-brand-kit .color-swatch.white {
+    background: var(--tesco-white);
+    color: var(--tesco-black);
+    border: 1px solid var(--dark-border);
+}
+
+.tesco-brand-kit .color-swatch.black {
+    background: var(--tesco-black);
+    color: var(--tesco-white);
+}
+
+/* Contrast checker widget */
+.contrast-checker {
+    background: var(--dark-card);
+    padding: 1rem;
+    border-radius: 8px;
+    margin: 1rem 0;
+}
+
+.contrast-checker .checker-title {
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+}
+
+.contrast-checker .color-inputs {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+}
+
+.contrast-checker .color-input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.contrast-checker .color-input-group label {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+}
+
+.contrast-checker .ratio-display {
+    background: var(--dark-surface);
+    padding: 1rem;
+    border-radius: 6px;
+    text-align: center;
+}
+
+.contrast-checker .ratio-value {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+.contrast-checker .ratio-value.pass {
+    color: var(--success);
+}
+
+.contrast-checker .ratio-value.fail {
+    color: var(--error);
+}
+
+.contrast-checker .ratio-label {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+}

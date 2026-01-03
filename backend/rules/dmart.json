@@ -1,0 +1,44 @@
+{
+  "retailer": "dmart",
+  "name": "DMart Advertisement Standards",
+  "version": "2024.1",
+  "rules": {
+    "logo": {
+      "min_width": 90,
+      "min_height": 40,
+      "max_width_percent": 0.22,
+      "safe_zone_margin": 25,
+      "allowed_positions": ["top-left", "top-right"],
+      "required": true
+    },
+    "text": {
+      "headline_min_font_size": 26,
+      "body_min_font_size": 18,
+      "max_coverage_percent": 25,
+      "min_contrast_ratio": 5.0,
+      "allowed_fonts": ["Arial", "Helvetica", "Sans-serif"],
+      "max_lines": 2,
+      "price_emphasis_required": true
+    },
+    "layout": {
+      "safe_margin_px": 35,
+      "min_product_size_percent": 45,
+      "max_elements": 8,
+      "required_whitespace_percent": 20,
+      "value_focused": true
+    },
+    "colors": {
+      "min_contrast": 5.0,
+      "max_colors": 4,
+      "recommended_colors": ["#1E88E5", "#FFC107", "#FFFFFF"],
+      "avoid_colors": ["#FF0000"]
+    },
+    "image": {
+      "min_resolution": [1000, 600],
+      "max_file_size_mb": 6,
+      "allowed_formats": ["PNG", "JPEG"],
+      "dpi": 96,
+      "product_background_removal": "recommended"
+    }
+  }
+}
