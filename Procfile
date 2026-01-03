@@ -1,1 +1,1 @@
-web: cd backend && python3 -m app.main
+web: bash start.sh
