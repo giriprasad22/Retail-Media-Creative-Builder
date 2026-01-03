@@ -36,5 +36,5 @@ ENV PYTHONDONTWRITEBYTECODE=1
 # Expose port (Railway uses PORT env variable)
 EXPOSE 8080
 
-# Start the application with gunicorn
-CMD ["sh", "-c", "gunicorn --chdir backend app.main:app --bind 0.0.0.0:${PORT:-8080} --workers 2 --timeout 120"]
+# Start with 1 worker to reduce memory usage, preload to share model
+CMD ["sh", "-c", "gunicorn --chdir backend app.main:app --bind 0.0.0.0:${PORT:-8080} --workers 1 --timeout 120 --preload"]
