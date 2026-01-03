@@ -1,0 +1,1510 @@
+================================================================================
+            RETAIL MEDIA CREATIVE BUILDER - COMPLETE PROJECT DOCUMENTATION
+================================================================================
+
+                    AI-Powered Advertising Creative Generation Platform
+                                 Version: 2.0 (Hybrid Mode)
+                                   Date: January 3, 2026
+
+================================================================================
+                              TABLE OF CONTENTS
+================================================================================
+
+    1.  PROJECT OVERVIEW
+    2.  WHAT THIS PROJECT DOES
+    3.  KEY FEATURES
+    4.  TECHNOLOGY STACK
+    5.  PROJECT ARCHITECTURE
+    6.  FOLDER STRUCTURE
+    7.  USER WORKFLOWS (How End Users Use This)
+    8.  DEVELOPER WORKFLOWS (How Developers Work on This)
+    9.  API ENDPOINTS REFERENCE
+    10. AI SERVICES EXPLAINED
+    11. HYBRID IMAGE GENERATION MODE
+    12. CONFIGURATION FILES
+    13. DEPLOYMENT OPTIONS
+    14. SECURITY CONSIDERATIONS
+    15. TROUBLESHOOTING GUIDE
+    16. FUTURE IMPROVEMENTS
+    17. GLOSSARY OF TERMS
+
+================================================================================
+                           1. PROJECT OVERVIEW
+================================================================================
+
+WHAT IS THIS?
+-------------
+Retail Media Creative Builder is a web-based platform that uses Artificial 
+Intelligence to automatically generate advertising creatives (banners, product
+images, promotional graphics) for e-commerce platforms like Amazon, Flipkart,
+and DMart.
+
+WHO IS IT FOR?
+--------------
+1. E-commerce sellers who need product advertisements
+2. Marketing teams creating promotional content
+3. Designers who want AI assistance
+4. Agencies managing multiple brand creatives
+
+PROBLEM IT SOLVES:
+------------------
+- Creating professional ads usually requires Photoshop skills and hours of work
+- Hiring designers is expensive
+- Each platform (Amazon, Flipkart) has different size requirements
+- Compliance with advertising guidelines is complex
+
+HOW IT SOLVES:
+--------------
+- AI generates complete creatives in seconds
+- No design skills needed - just describe what you want
+- Automatic compliance checking for each platform
+- One-click export to all required sizes and formats
+
+================================================================================
+                         2. WHAT THIS PROJECT DOES
+================================================================================
+
+CORE FUNCTIONALITY:
+-------------------
+
+1. AI IMAGE GENERATION
+   - Generates product backgrounds, lifestyle shots, promotional images
+   - Uses state-of-the-art models: SDXL, SD3, FLUX.1
+   - 10 professional visual styles to choose from
+   - Works both locally (with GPU) or via cloud APIs
+
+2. AI CHAT ASSISTANT
+   - Natural language editing: "make the headline bigger"
+   - Powered by Google Gemini 2.5-flash
+   - Understands context and design terminology
+   - Provides creative suggestions
+
+3. BACKGROUND REMOVAL
+   - Removes backgrounds from product photos
+   - Uses AI (rembg with U2-Net model)
+   - Produces clean cutouts for placing on new backgrounds
+
+4. COMPLIANCE CHECKING
+   - Validates creatives against platform guidelines
+   - Checks: logo size, text coverage, safe zones, colors
+   - Auto-fix feature for quick corrections
+   - Supports: Amazon, Flipkart, DMart, General
+
+5. MULTI-FORMAT EXPORT
+   - Export to PNG, JPG, WebP
+   - Platform-specific size presets
+   - Batch export for multiple sizes at once
+   - Quality optimization
+
+================================================================================
+                            3. KEY FEATURES
+================================================================================
+
+FEATURE 1: AI Image Generation (Hybrid Mode)
+--------------------------------------------
+Models Available:
+  - SDXL (Stable Diffusion XL): Best quality, 1024px images
+  - SD3 (Stable Diffusion 3): Latest architecture
+  - FLUX.1: Fast generation
+  - SDXL Turbo: Ultra-fast (5 seconds)
+  - SD 1.5: Lightweight, works on lower VRAM
+  - DreamShaper: Artistic style
+  - Realistic Vision: Photorealistic
+
+Visual Styles (10 Options):
+  1. Photorealistic - Ultra-realistic photography
+  2. Cinematic - Movie-quality dramatic lighting
+  3. Commercial Product - Clean e-commerce ready
+  4. Elegant Luxury - Premium high-end aesthetic
+  5. Modern Minimalist - Clean, simple, contemporary
+  6. Vibrant & Bold - High saturation, energetic
+  7. Soft & Dreamy - Ethereal, gentle lighting
+  8. Artistic - Creative, painterly
+  9. Hyper-Realistic - Maximum detail and clarity
+  10. Premium Studio - Professional studio lighting
+
+
+FEATURE 2: Canvas Editor
+------------------------
+- Drag-and-drop layer management
+- Text editing with fonts and styles
+- Shape tools and decorations
+- Undo/Redo history (50 steps)
+- Zoom and pan controls
+- Grid and snap-to-grid
+- Layer ordering (bring to front, send to back)
+
+
+FEATURE 3: AI Chat Assistant
+----------------------------
+Example Commands:
+  - "Make the headline red and bigger"
+  - "Add a 20% OFF badge in the corner"
+  - "Change the background to a kitchen scene"
+  - "Make the product image larger"
+  - "Add a call-to-action button"
+
+
+FEATURE 4: Platform Compliance
+------------------------------
+Amazon Guidelines:
+  - Logo: 5-15% of image area
+  - Text: Minimum 16px font size
+  - Safe zone: 5% margin from edges
+  - Contrast ratio: 4.5:1 minimum
+
+Flipkart Guidelines:
+  - Product: At least 25% of creative
+  - Text: Maximum 30% coverage
+  - Safe zone: 3% margin
+  - Background: No pure white
+
+DMart Guidelines:
+  - Logo: 10-30% of image area
+  - Safe zone: 4% margin
+  - Price visibility required
+
+
+FEATURE 5: Template System
+--------------------------
+- Pre-designed templates for quick starts
+- Category-based organization
+- Customizable elements
+- Save your own templates
+
+
+FEATURE 6: Export Options
+-------------------------
+Formats: PNG, JPG, WebP
+Quality: 1x, 2x, 3x resolution
+Presets:
+  - Amazon: 1200x628, 1500x1500
+  - Flipkart: 1200x1200, 1080x1920
+  - Instagram: 1080x1080, 1080x1920
+  - Custom sizes
+
+================================================================================
+                          4. TECHNOLOGY STACK
+================================================================================
+
+BACKEND (Python):
+-----------------
+Framework:        Flask 3.0 (Web framework)
+Language:         Python 3.11+
+AI/ML:            
+  - PyTorch (Deep learning framework)
+  - Diffusers (Stable Diffusion)
+  - Transformers (Hugging Face)
+  - rembg (Background removal)
+  
+APIs:
+  - Google Gemini API (LLM chat)
+  - Hugging Face Inference API (Image generation)
+  
+Data Validation: Pydantic 2.0
+Logging:         Loguru
+Async:           asyncio, aiohttp
+
+
+FRONTEND (Web):
+---------------
+Languages:       HTML5, CSS3, JavaScript (ES6+)
+Styling:         Custom CSS with variables
+Icons:           Font Awesome
+Architecture:    Modular JS (20+ modules)
+Canvas:          HTML5 Canvas API
+
+
+INFRASTRUCTURE:
+---------------
+Development:     Local Python virtual environment
+Production:      Cloud platforms (Render, Railway, Vercel)
+Storage:         Local file system
+Database:        None (file-based)
+
+
+KEY PACKAGES (requirements.txt):
+--------------------------------
+Core:
+  - flask==3.0.*
+  - flask-cors
+  - google-genai (Gemini API)
+  - pydantic>=2.0
+  - pydantic-settings
+
+Image Processing:
+  - Pillow>=10.0.0
+  - numpy>=1.24.0
+  - rembg (background removal)
+  - onnxruntime
+
+HTTP/Async:
+  - requests
+  - httpx
+  - aiohttp
+  - aiofiles
+
+Optional (Local AI):
+  - torch
+  - torchvision
+  - diffusers
+  - transformers
+  - accelerate
+
+================================================================================
+                        5. PROJECT ARCHITECTURE
+================================================================================
+
+HIGH-LEVEL ARCHITECTURE:
+------------------------
+
+    ┌─────────────────────────────────────────────────────────────────────┐
+    │                         USER'S BROWSER                               │
+    │  ┌───────────────────────────────────────────────────────────────┐  │
+    │  │                    FRONTEND (HTML/CSS/JS)                      │  │
+    │  │  ┌─────────┐ ┌─────────┐ ┌─────────┐ ┌─────────┐ ┌─────────┐  │  │
+    │  │  │ Editor  │ │Templates│ │  Chat   │ │ Export  │ │Compliance│  │  │
+    │  │  └────┬────┘ └────┬────┘ └────┬────┘ └────┬────┘ └────┬────┘  │  │
+    │  └───────┼──────────┼──────────┼──────────┼──────────┼────────────┘  │
+    └──────────┼──────────┼──────────┼──────────┼──────────┼───────────────┘
+               │          │          │          │          │
+               └──────────┴──────────┼──────────┴──────────┘
+                                     │ HTTP API Calls
+                                     ▼
+    ┌─────────────────────────────────────────────────────────────────────┐
+    │                    BACKEND (Flask Server - Port 8000)                │
+    │  ┌───────────────────────────────────────────────────────────────┐  │
+    │  │                        API ROUTES                              │  │
+    │  │  /api/ai/generate/*  │  /api/ai/chat  │  /check-guidelines/*  │  │
+    │  └───────────────────────────────────────────────────────────────┘  │
+    │                              │                                       │
+    │  ┌───────────────────────────┴───────────────────────────────────┐  │
+    │  │                        SERVICES                                │  │
+    │  │  ┌──────────────┐ ┌──────────────┐ ┌──────────────────────┐   │  │
+    │  │  │ Hybrid Image │ │   Gemini     │ │ Guideline Checker    │   │  │
+    │  │  │  Generator   │ │   Service    │ │                      │   │  │
+    │  │  └──────┬───────┘ └──────────────┘ └──────────────────────┘   │  │
+    │  │         │                                                      │  │
+    │  │  ┌──────┴───────────────────────────────────────────────────┐ │  │
+    │  │  │              AI SERVICES LAYER                            │ │  │
+    │  │  │  ┌────────────┐ ┌────────────┐ ┌────────────────────┐    │ │  │
+    │  │  │  │ Free Image │ │ Background │ │ Advanced Image Gen │    │ │  │
+    │  │  │  │    API     │ │  Removal   │ │  (Local Models)    │    │ │  │
+    │  │  │  └──────┬─────┘ └────────────┘ └────────────────────┘    │ │  │
+    │  │  └─────────┼─────────────────────────────────────────────────┘ │  │
+    │  └────────────┼─────────────────────────────────────────────────┘   │
+    └───────────────┼─────────────────────────────────────────────────────┘
+                    │
+        ┌───────────┼───────────┐
+        │           │           │
+        ▼           ▼           ▼
+    ┌────────┐ ┌────────┐ ┌────────────┐
+    │ Hugging│ │ Google │ │   Local    │
+    │  Face  │ │ Gemini │ │  PyTorch   │
+    │  API   │ │  API   │ │  (Optional)│
+    └────────┘ └────────┘ └────────────┘
+
+
+DATA FLOW:
+----------
+
+1. Image Generation Request:
+   User clicks "Generate" 
+   → Frontend sends POST to /api/ai/generate/sdxl
+   → Backend's Hybrid Generator checks mode (local vs API)
+   → If API mode: Sends request to Hugging Face Inference API
+   → If Local mode: Runs through PyTorch/Diffusers
+   → Returns base64 image
+   → Frontend displays on canvas
+
+2. AI Chat Request:
+   User types "make text bigger"
+   → Frontend sends POST to /api/ai/chat
+   → Backend sends to Gemini API
+   → Gemini returns structured response
+   → Backend parses into canvas actions
+   → Frontend applies changes
+
+3. Compliance Check:
+   User clicks "Check Compliance"
+   → Frontend sends canvas data to /check-guidelines/amazon
+   → Backend's GuidelineChecker validates rules
+   → Returns pass/fail for each rule
+   → Frontend shows results with fix suggestions
+
+================================================================================
+                          6. FOLDER STRUCTURE
+================================================================================
+
+Retail Media Creative Builder/
+│
+├── .env                          # Environment variables (API keys, mode)
+├── .gitignore                    # Git ignore rules
+├── .venv/                        # Python virtual environment
+├── run.py                        # Quick start script
+├── README.md                     # Project readme
+├── SETUP_GUIDE.md               # Installation guide
+├── PROJECT_STATUS.md            # Current project status
+├── PROJECT_DOCUMENTATION.txt    # This file
+│
+├── backend/                      # Python backend
+│   │
+│   ├── requirements.txt         # Python dependencies
+│   │
+│   └── app/                     # Main application package
+│       │
+│       ├── __init__.py          # Package init
+│       ├── main.py              # Flask app & all routes (1400+ lines)
+│       ├── config.py            # Settings configuration
+│       ├── auto_installer.py    # Automatic package installer
+│       │
+│       ├── models/              # Data models
+│       │   ├── __init__.py
+│       │   └── schemas.py       # Pydantic models (237 lines)
+│       │
+│       └── services/            # Business logic
+│           │
+│           ├── __init__.py
+│           ├── guideline_checker.py    # Platform compliance (450+ lines)
+│           ├── auto_fixer.py           # Auto-fix issues
+│           ├── creative_editor.py      # Canvas operations
+│           ├── exporter.py             # Export service
+│           ├── image_analyzer.py       # Image analysis
+│           ├── layer_manager.py        # Layer operations
+│           ├── layout_generator.py     # Layout generation
+│           ├── prompt_parser.py        # AI prompt parsing
+│           │
+│           └── ai/                     # AI services
+│               │
+│               ├── __init__.py              # Exports (161 lines)
+│               ├── hybrid_image_gen.py      # Hybrid mode (203 lines)
+│               ├── free_image_api.py        # Hugging Face API (166 lines)
+│               ├── gemini_service.py        # Google Gemini (500+ lines)
+│               ├── unified_agent.py         # Unified AI agent
+│               ├── background_removal.py    # rembg service
+│               ├── advanced_image_generator.py  # Local models
+│               ├── stable_diffusion.py      # SD service
+│               └── multi_model_generator.py # Multi-model
+│
+├── frontend/                    # Web frontend
+│   │
+│   ├── index.html              # Landing page
+│   ├── editor.html             # Main editor (7000+ lines)
+│   ├── templates.html          # Template browser
+│   │
+│   ├── css/                    # Stylesheets
+│   │   ├── base.css            # Base styles
+│   │   ├── variables.css       # CSS variables
+│   │   ├── layout.css          # Layout styles
+│   │   ├── components.css      # UI components
+│   │   ├── animations.css      # Animations
+│   │   ├── ai-panel.css        # AI panel styles
+│   │   ├── templates.css       # Template styles
+│   │   └── responsive.css      # Mobile responsive
+│   │
+│   └── js/                     # JavaScript modules
+│       ├── api.js              # API client (459 lines)
+│       ├── app.js              # Main application
+│       ├── editor.js           # Canvas editor (1200+ lines)
+│       ├── ai-agent.js         # AI assistant
+│       ├── compliance.js       # Compliance checker UI
+│       ├── layers.js           # Layer management
+│       ├── export.js           # Export functionality
+│       ├── templates.js        # Template system
+│       ├── history.js          # Undo/redo
+│       ├── dragdrop.js         # Drag & drop
+│       ├── shortcuts.js        # Keyboard shortcuts
+│       ├── toast.js            # Notifications
+│       ├── utils.js            # Utilities
+│       ├── batch.js            # Batch operations
+│       ├── brandkit.js         # Brand kit
+│       ├── colorpalette.js     # Color picker
+│       ├── onboarding.js       # User onboarding
+│       ├── promptSuggestions.js # Prompt hints
+│       ├── settings.js         # User settings
+│       └── workflow.js         # Workflow management
+│
+└── outputs/                    # Generated files (auto-created)
+
+================================================================================
+                7. USER WORKFLOWS (How End Users Use This)
+================================================================================
+
+WORKFLOW 1: Creating a New Ad from Scratch
+------------------------------------------
+
+Step 1: Open the Application
+   - Go to http://localhost:8000 in your browser
+   - You'll see the landing page with "Create New" button
+
+Step 2: Enter Product Details
+   - Click "Create New Creative"
+   - Fill in the form:
+     * Product Name: "Premium Coffee Maker"
+     * Brand: "HomeBlend"
+     * Price: "$89.99"
+     * Theme: Select "Home & Kitchen"
+
+Step 3: Choose Canvas Size
+   - Select target platform: Amazon, Flipkart, or Custom
+   - Platform presets automatically set the correct dimensions
+   - Example: Amazon Banner = 1200x628 pixels
+
+Step 4: Generate Background with AI
+   - Click "AI Generate" button in the editor
+   - Describe what you want: "Modern kitchen countertop with morning light"
+   - Select style: "Commercial Product"
+   - Select model: "SDXL" (recommended) or "SDXL Turbo" (faster)
+   - Click "Generate" and wait 5-30 seconds
+
+Step 5: Add Your Product
+   - Click "Upload Product Image"
+   - Upload your product photo (PNG or JPG)
+   - The AI automatically removes the background
+   - Position and resize the product on the canvas
+
+Step 6: Add Text Elements
+   - Use the text tool to add:
+     * Headline: "Premium Coffee Maker"
+     * Subheadline: "Wake Up to Perfection"
+     * Price: "$89.99"
+     * CTA: "Shop Now"
+   - Customize fonts, colors, and sizes
+
+Step 7: Check Compliance
+   - Click "Check Compliance" in the sidebar
+   - Select your target platform (Amazon, Flipkart, etc.)
+   - View the results: green checkmarks = pass, red X = issues
+   - Use "Auto Fix" for quick corrections
+
+Step 8: Export Your Creative
+   - Click "Export" button
+   - Choose format: PNG (best quality) or JPG (smaller file)
+   - Select resolution: 1x (standard), 2x (retina)
+   - Download your finished ad!
+
+
+WORKFLOW 2: Using AI Chat to Edit
+---------------------------------
+
+Step 1: Open the AI Chat Panel
+   - Click the chat icon in the right sidebar
+   - The chat panel opens with input field
+
+Step 2: Type Natural Language Commands
+   Examples:
+   - "Make the headline text red"
+   - "Increase the product image size by 20%"
+   - "Move the price to the bottom right corner"
+   - "Add a 'Free Shipping' badge"
+   - "Change the background to blue gradient"
+
+Step 3: AI Processes and Applies Changes
+   - AI understands your command
+   - Automatically applies changes to the canvas
+   - You see the result instantly
+
+Step 4: Iterate
+   - If not perfect, type another command
+   - "Actually, make it a bit smaller"
+   - AI remembers context and adjusts
+
+
+WORKFLOW 3: Using Templates
+---------------------------
+
+Step 1: Browse Templates
+   - Click "Templates" tab
+   - Browse by category: Sale, Product, Lifestyle, Minimal
+
+Step 2: Preview and Select
+   - Hover over a template to see preview
+   - Click to select
+
+Step 3: Customize
+   - Template loads with placeholder content
+   - Replace text with your product info
+   - Swap images with your products
+   - Adjust colors to match your brand
+
+
+WORKFLOW 4: Batch Export for Multiple Platforms
+-----------------------------------------------
+
+Step 1: Design Your Creative
+   - Create the main design at any size
+
+Step 2: Open Batch Export
+   - Click "Export All Sizes" button
+
+Step 3: Select Platforms
+   - Check boxes for each platform/size you need:
+     □ Amazon Banner (1200x628)
+     □ Amazon Square (1500x1500)
+     □ Flipkart (1200x1200)
+     □ Instagram Post (1080x1080)
+     □ Instagram Story (1080x1920)
+
+Step 4: Export
+   - Click "Export All"
+   - System automatically resizes and adjusts
+   - Downloads as ZIP file with all versions
+
+================================================================================
+            8. DEVELOPER WORKFLOWS (How Developers Work on This)
+================================================================================
+
+WORKFLOW 1: Setting Up Development Environment
+----------------------------------------------
+
+Step 1: Clone the Repository
+   git clone <repository-url>
+   cd "Retail Media Creative Builder"
+
+Step 2: Create Virtual Environment
+   python -m venv .venv
+   
+   # Windows:
+   .venv\Scripts\activate
+   
+   # Mac/Linux:
+   source .venv/bin/activate
+
+Step 3: Install Dependencies
+   cd backend
+   pip install -r requirements.txt
+
+Step 4: Configure Environment
+   # Copy .env.example to .env (or create .env)
+   # Add your API keys:
+   
+   GEMINI_API_KEY=your_gemini_api_key_here
+   IMAGE_GEN_MODE=auto
+
+Step 5: Run the Server
+   python run.py
+   
+   # Or for development with auto-reload:
+   python -m flask --app app.main run --port 8000 --debug
+
+
+WORKFLOW 2: Adding a New API Endpoint
+-------------------------------------
+
+Step 1: Define the Route (backend/app/main.py)
+   
+   @app.route('/api/my-new-endpoint', methods=['POST'])
+   @handle_errors
+   def my_new_endpoint():
+       """Description of what this endpoint does."""
+       data = request.get_json()
+       
+       # Your logic here
+       result = some_service.do_something(data)
+       
+       return jsonify({
+           "success": True,
+           "data": result
+       })
+
+Step 2: Create Service if Needed (backend/app/services/)
+   
+   # Create new file: my_service.py
+   class MyService:
+       def do_something(self, data):
+           # Business logic here
+           return processed_data
+
+Step 3: Add Frontend API Call (frontend/js/api.js)
+   
+   async myNewFunction(params) {
+       return this.request('/api/my-new-endpoint', {
+           method: 'POST',
+           body: JSON.stringify(params)
+       });
+   }
+
+Step 4: Test the Endpoint
+   # Using curl:
+   curl -X POST http://localhost:8000/api/my-new-endpoint \
+        -H "Content-Type: application/json" \
+        -d '{"param1": "value1"}'
+
+
+WORKFLOW 3: Adding a New AI Model
+---------------------------------
+
+Step 1: Add Model to free_image_api.py
+   
+   MODELS = {
+       # ... existing models ...
+       "new_model": "repo_owner/model-name",
+   }
+
+Step 2: Update hybrid_image_gen.py
+   # The hybrid generator automatically picks up new models
+
+Step 3: Add UI Option (frontend/editor.html)
+   
+   <option value="new_model">New Model Name</option>
+
+Step 4: Test Generation
+   # Test via API:
+   curl -X POST http://localhost:8000/api/ai/generate/auto \
+        -H "Content-Type: application/json" \
+        -d '{"prompt": "test image", "model": "new_model"}'
+
+
+WORKFLOW 4: Debugging Issues
+----------------------------
+
+Step 1: Check Server Logs
+   # Server prints logs to terminal
+   # Look for ERROR or WARNING messages
+   
+   # Enable debug mode:
+   export FLASK_DEBUG=1  # Mac/Linux
+   set FLASK_DEBUG=1     # Windows
+
+Step 2: Check Browser Console
+   # Press F12 in browser
+   # Go to Console tab
+   # Look for JavaScript errors
+
+Step 3: Check Network Requests
+   # Press F12 in browser
+   # Go to Network tab
+   # Click on failed request
+   # Check Response for error details
+
+Step 4: Test API Directly
+   # Use curl or Postman to test API endpoints
+   # Isolates frontend vs backend issues
+
+Step 5: Add Debug Logging
+   # Backend (Python):
+   from loguru import logger
+   logger.debug(f"Variable value: {my_var}")
+   
+   # Frontend (JavaScript):
+   console.log("Debug info:", myVariable);
+
+
+WORKFLOW 5: Adding a New Platform for Compliance
+------------------------------------------------
+
+Step 1: Define Rules (backend/app/services/guideline_checker.py)
+   
+   def _get_newplatform_rules(self) -> Dict[str, Any]:
+       return {
+           "retailer": "newplatform",
+           "name": "New Platform Guidelines",
+           "rules": [
+               {
+                   "rule_id": "np_logo_size",
+                   "name": "Logo Size",
+                   "description": "Logo must be 5-15% of area",
+                   "category": "logo",
+                   "severity": "error",
+                   "params": {"min_percent": 5, "max_percent": 15}
+               },
+               # ... more rules ...
+           ]
+       }
+
+Step 2: Register in _load_rules()
+   
+   self.default_rules["newplatform"] = self._get_newplatform_rules()
+
+Step 3: Add Frontend Option (frontend/js/compliance.js)
+   
+   rules: {
+       // ... existing platforms ...
+       newplatform: {
+           name: 'New Platform',
+           color: '#ff0000',
+           checks: [...]
+       }
+   }
+
+
+WORKFLOW 6: Deploying to Cloud
+------------------------------
+
+Step 1: Prepare Environment Variables
+   # Required:
+   GEMINI_API_KEY=your_key
+   IMAGE_GEN_MODE=api  # Forces API mode (no local models)
+   
+   # Optional:
+   HF_TOKEN=your_huggingface_token  # For faster API
+
+Step 2: Deploy to Render.com
+   # Create new Web Service
+   # Connect GitHub repo
+   # Build Command: pip install -r requirements.txt
+   # Start Command: cd backend && python -m app.main
+   # Environment Variables: Add from Step 1
+
+Step 3: Deploy to Railway.app
+   # Same process as Render
+   # Railway auto-detects Python
+
+Step 4: Verify Deployment
+   # Visit your app URL
+   # Test image generation (should use API mode)
+   # Check logs for any errors
+
+================================================================================
+                        9. API ENDPOINTS REFERENCE
+================================================================================
+
+BASE URL: http://localhost:8000
+
+HEALTH & STATUS:
+---------------
+GET  /api/health
+     Response: { "status": "ok", "version": "2.0" }
+
+
+AI IMAGE GENERATION:
+--------------------
+POST /api/ai/generate/sdxl
+     Body: { "prompt": "...", "width": 1024, "height": 768 }
+     Response: { "success": true, "image": "base64...", "model": "sdxl" }
+
+POST /api/ai/generate/sd3
+     Body: { "prompt": "...", "width": 1024, "height": 768 }
+     
+POST /api/ai/generate/flux
+     Body: { "prompt": "...", "width": 1024, "height": 768 }
+
+POST /api/ai/generate/auto
+     Body: { "prompt": "...", "quality": "balanced" }
+     Options: quality = "fast" | "balanced" | "best"
+
+
+BACKGROUND REMOVAL:
+-------------------
+POST /api/ai/remove-background
+     Body: { "image": "base64..." } or FormData with file
+     Response: { "success": true, "image": "base64..." }
+
+
+AI CHAT:
+--------
+POST /api/ai/chat
+     Body: { "message": "make the text bigger", "context": {...} }
+     Response: { "success": true, "response": "...", "actions": [...] }
+
+
+COMPLIANCE CHECKING:
+--------------------
+GET  /api/retailers
+     Response: { "retailers": ["amazon", "flipkart", "dmart"] }
+
+POST /check-guidelines/<platform>
+     Body: { "width": 1200, "height": 628, "elements": [...] }
+     Response: { 
+         "is_compliant": true/false, 
+         "issues": [...],
+         "total_checks": 5,
+         "passed_checks": 4
+     }
+
+POST /api/ai/check-compliance
+     Body: { "canvas": {...}, "retailer": "amazon" }
+     Response: { "compliant": true, "issues": [], "suggestions": [] }
+
+POST /api/ai/auto-fix
+     Body: { "canvas": {...}, "issues": [...], "retailer": "amazon" }
+     Response: { "layout": {...}, "fixes_applied": 3 }
+
+
+AI AGENT (Advanced):
+--------------------
+GET  /api/ai/agent/status
+     Response: { "ready": true, "model": "gemini-2.5-flash" }
+
+POST /api/ai/agent/command
+     Body: { "command": "add a red button", "doc": {...} }
+     
+POST /api/ai/agent/apply-patch
+     Body: { "doc_id": "...", "patches": [...] }
+
+POST /api/ai/agent/undo/<doc_id>
+POST /api/ai/agent/redo/<doc_id>
+
+
+FILE OPERATIONS:
+----------------
+POST /api/upload/product
+     FormData: file (image)
+     Response: { "path": "/uploads/...", "url": "..." }
+
+POST /api/upload/logo
+     FormData: file (image)
+
+POST /api/export/png
+POST /api/export/jpg
+POST /api/export/webp
+     Body: { "canvas": {...}, "quality": 90 }
+
+
+STATIC FILES:
+-------------
+GET  /                    → index.html
+GET  /editor.html         → Editor page
+GET  /css/<filename>      → CSS files
+GET  /js/<filename>       → JavaScript files
+GET  /uploads/<filename>  → Uploaded files
+GET  /outputs/<filename>  → Generated outputs
+
+================================================================================
+                       10. AI SERVICES EXPLAINED
+================================================================================
+
+SERVICE 1: Hybrid Image Generator (hybrid_image_gen.py)
+-------------------------------------------------------
+Purpose: Automatically choose between local models and cloud API
+
+How It Works:
+1. On initialization, checks environment:
+   - Is IMAGE_GEN_MODE set to "local" or "api"?
+   - Are cloud indicators present (RENDER, RAILWAY, VERCEL)?
+   - Is PyTorch/torch installed?
+
+2. Decision Logic:
+   IF IMAGE_GEN_MODE == "api" → Use API
+   ELIF IMAGE_GEN_MODE == "local" → Use Local
+   ELIF cloud environment detected → Use API
+   ELIF torch is available → Use Local
+   ELSE → Use API
+
+3. When generating:
+   - API Mode: Calls FreeImageAPI
+   - Local Mode: Calls AdvancedImageGenerator
+
+Key Methods:
+   - generate(prompt, model_type) → Returns PIL Image
+   - generate_background(prompt) → Advertising-optimized
+   - get_available_models() → List models + current mode
+
+
+SERVICE 2: Free Image API (free_image_api.py)
+---------------------------------------------
+Purpose: Generate images using Hugging Face's free Inference API
+
+How It Works:
+1. Sends HTTP POST to Hugging Face API
+2. Includes prompt and parameters
+3. Receives binary image data
+4. Converts to PIL Image and base64
+
+Available Models:
+   - stabilityai/stable-diffusion-xl-base-1.0
+   - stabilityai/stable-diffusion-3-medium
+   - black-forest-labs/FLUX.1-schnell
+   - stabilityai/sdxl-turbo
+   - runwayml/stable-diffusion-v1-5
+
+Advantages:
+   - No model downloads (0 GB storage)
+   - Free tier: 1000+ images/month
+   - Same quality as local
+   - Works anywhere with internet
+
+
+SERVICE 3: Gemini Service (gemini_service.py)
+---------------------------------------------
+Purpose: AI chat and natural language understanding
+
+Capabilities:
+   - Chat: Answer questions, have conversations
+   - Command Translation: "make it red" → { action: "change_color", value: "red" }
+   - Compliance Checking: Validate text against guidelines
+   - Suggestions: Recommend design improvements
+
+System Prompts (pre-configured personalities):
+   - design_assistant: Helps with creative decisions
+   - command_translator: Converts natural language to actions
+   - compliance_checker: Reviews advertising guidelines
+
+Key Methods:
+   - generate(prompt) → Text response
+   - chat(messages) → Conversational response
+   - check_compliance(text, retailer) → Compliance results
+   - translate_command(command, context) → Canvas actions
+
+
+SERVICE 4: Background Removal (background_removal.py)
+-----------------------------------------------------
+Purpose: Remove backgrounds from product photos
+
+Technology:
+   - Uses rembg library
+   - U2-Net neural network (170MB model)
+   - Runs locally (no API needed)
+
+Process:
+   1. Load image (base64 or file path)
+   2. Run through U2-Net
+   3. Generate alpha mask
+   4. Apply mask to create transparent background
+   5. Return PNG with transparency
+
+Options:
+   - alpha_matting: Better edge quality
+   - post_process: Clean up edges
+
+
+SERVICE 5: Guideline Checker (guideline_checker.py)
+---------------------------------------------------
+Purpose: Validate creatives against platform rules
+
+Supported Platforms:
+   - Amazon: Logo size, text size, safe zones, contrast
+   - Flipkart: Product visibility, text coverage, margins
+   - DMart: Logo placement, price visibility, background
+   - General: Basic requirements for any platform
+
+Rule Categories:
+   - logo: Size, position, visibility
+   - text: Font size, coverage, readability
+   - layout: Margins, safe zones, spacing
+   - color: Contrast, forbidden backgrounds
+   - technical: Dimensions, file size
+
+Output:
+   - Pass/Fail for each rule
+   - Severity: Error (must fix), Warning (should fix)
+   - Suggestions for fixes
+
+================================================================================
+                    11. HYBRID IMAGE GENERATION MODE
+================================================================================
+
+WHAT IS HYBRID MODE?
+--------------------
+Hybrid mode is a smart system that automatically chooses the best image 
+generation method based on your environment:
+
+LOCAL MODE (Development):
+   - Uses PyTorch + Diffusers
+   - Models run on your GPU/CPU
+   - Requires 10GB+ storage for models
+   - Unlimited generations
+   - Works offline
+
+API MODE (Cloud/Simple Setup):
+   - Uses Hugging Face Inference API
+   - No model downloads
+   - ~100MB total storage
+   - Free tier: 1000+ images/month
+   - Requires internet
+
+
+HOW AUTO-DETECTION WORKS:
+-------------------------
+1. Check IMAGE_GEN_MODE environment variable:
+   - "local" → Force local mode
+   - "api" → Force API mode
+   - "auto" → Auto-detect (default)
+
+2. If auto-detecting, check for cloud indicators:
+   - RENDER (Render.com)
+   - RAILWAY_PROJECT_ID (Railway.app)
+   - VERCEL (Vercel)
+   - DYNO (Heroku)
+   If any found → API mode
+
+3. If not in cloud, check if PyTorch is available:
+   - torch can be imported → Local mode available
+   - torch missing → API mode
+
+4. Default to API mode if uncertain
+
+
+CONFIGURATION:
+--------------
+In your .env file:
+
+# Auto-detect (recommended)
+IMAGE_GEN_MODE=auto
+
+# Force API mode (for cloud or quick setup)
+IMAGE_GEN_MODE=api
+
+# Force local mode (for unlimited generations)
+IMAGE_GEN_MODE=local
+
+# Optional: Hugging Face token for faster API
+HF_TOKEN=your_token_here
+
+
+STORAGE COMPARISON:
+-------------------
+                    API Mode    Local Mode
+Base Application    ~100 MB     ~100 MB
+SDXL Model          0 GB        ~6 GB
+SD3 Model           0 GB        ~5 GB
+FLUX Model          0 GB        ~5 GB
+PyTorch/CUDA        0 GB        ~4 GB
+                    -------     -------
+TOTAL               ~100 MB     ~20 GB
+
+================================================================================
+                       12. CONFIGURATION FILES
+================================================================================
+
+FILE 1: .env (Environment Variables)
+------------------------------------
+Location: Project root
+Purpose: Store API keys and settings
+
+Contents:
+   # Google Gemini API (Required)
+   GEMINI_API_KEY=AIzaSy...your_key_here
+   GEMINI_MODEL=gemini-2.5-flash
+   
+   # Image Generation Mode
+   IMAGE_GEN_MODE=auto
+   
+   # Optional: Hugging Face token
+   HF_TOKEN=hf_...your_token
+
+Security:
+   - Never commit to git (.gitignore includes it)
+   - Keep API keys private
+   - Use environment variables in production
+
+
+FILE 2: requirements.txt (Python Dependencies)
+----------------------------------------------
+Location: backend/requirements.txt
+Purpose: List all Python packages needed
+
+Structure:
+   # Core (always needed)
+   flask==3.0.*
+   flask-cors
+   pydantic>=2.0
+   pillow>=10.0.0
+   ...
+   
+   # Optional (for local image generation)
+   # torch
+   # diffusers
+   # transformers
+
+Notes:
+   - Core packages: ~25 items, ~100MB
+   - Optional packages: ~8 items, ~10GB
+   - Install with: pip install -r requirements.txt
+
+
+FILE 3: config.py (Application Settings)
+----------------------------------------
+Location: backend/app/config.py
+Purpose: Centralized application configuration
+
+Key Settings:
+   APP_NAME = "Retail Media Creative Builder"
+   APP_VERSION = "2.0"
+   DEBUG = True
+   
+   # Paths
+   UPLOAD_DIR = ./uploads
+   OUTPUT_DIR = ./outputs
+   TEMPLATES_DIR = ./templates
+   
+   # Limits
+   MAX_UPLOAD_SIZE = 10MB
+   ALLOWED_EXTENSIONS = {png, jpg, jpeg, webp}
+   DEFAULT_VARIATIONS = 6
+   MAX_VARIATIONS = 12
+
+
+FILE 4: auto_installer.py (Automatic Setup)
+-------------------------------------------
+Location: backend/app/auto_installer.py
+Purpose: Auto-install packages on first run
+
+Features:
+   - Detects cloud vs local environment
+   - Installs only needed packages
+   - Skips heavy packages in cloud
+   - Shows progress with colored output
+   - Verifies Gemini API key
+
+================================================================================
+                        13. DEPLOYMENT OPTIONS
+================================================================================
+
+OPTION 1: Local Development
+---------------------------
+Requirements:
+   - Python 3.11+
+   - 8GB RAM (16GB for local AI)
+   - Optional: NVIDIA GPU with 8GB+ VRAM
+
+Commands:
+   cd "Retail Media Creative Builder"
+   python run.py
+
+Result:
+   - Server at http://localhost:8000
+   - Hybrid mode (local + API)
+   - Full feature access
+
+
+OPTION 2: Render.com (Free Tier)
+--------------------------------
+Steps:
+   1. Push code to GitHub
+   2. Create new Web Service on Render
+   3. Connect GitHub repo
+   4. Configure:
+      - Build: pip install -r requirements.txt
+      - Start: cd backend && python -m app.main
+   5. Add Environment Variables:
+      - GEMINI_API_KEY
+      - IMAGE_GEN_MODE=api
+   6. Deploy
+
+Result:
+   - Free tier available
+   - ~100MB storage used
+   - API mode for images
+   - HTTPS URL provided
+
+
+OPTION 3: Railway.app
+---------------------
+Steps:
+   1. Connect GitHub
+   2. Railway auto-detects Python
+   3. Add environment variables
+   4. Deploy
+
+Result:
+   - $5 free credit
+   - Fast deployments
+   - API mode auto-enabled
+
+
+OPTION 4: Docker (For Any Platform)
+-----------------------------------
+Dockerfile:
+   FROM python:3.11-slim
+   WORKDIR /app
+   COPY backend/requirements.txt .
+   RUN pip install -r requirements.txt
+   COPY backend/ .
+   COPY frontend/ /app/frontend/
+   ENV IMAGE_GEN_MODE=api
+   EXPOSE 8000
+   CMD ["python", "-m", "app.main"]
+
+Commands:
+   docker build -t creative-builder .
+   docker run -p 8000:8000 -e GEMINI_API_KEY=... creative-builder
+
+
+OPTION 5: Traditional VPS
+-------------------------
+Requirements:
+   - Any Linux VPS (Ubuntu 22.04 recommended)
+   - 1GB RAM minimum
+   - Python 3.11 installed
+
+Setup:
+   ssh your-server
+   git clone <repo>
+   cd "Retail Media Creative Builder"
+   python -m venv .venv
+   source .venv/bin/activate
+   pip install -r requirements.txt
+   # Create .env with API keys
+   # Use systemd or supervisor for persistence
+   python run.py
+
+================================================================================
+                     14. SECURITY CONSIDERATIONS
+================================================================================
+
+API KEYS:
+---------
+1. Gemini API Key
+   - Stored in .env file (never committed)
+   - Used for AI chat features
+   - Rate limited by Google
+
+2. Hugging Face Token (Optional)
+   - Provides faster API access
+   - Not required for basic functionality
+
+Best Practices:
+   - Never hardcode API keys
+   - Use environment variables
+   - Rotate keys periodically
+   - Monitor usage for abuse
+
+
+CORS (Cross-Origin Resource Sharing):
+------------------------------------
+Current Setting: Allow all origins (*)
+
+For Production:
+   # In main.py, change:
+   CORS(app, resources={r"/*": {"origins": "*"}})
+   
+   # To:
+   CORS(app, resources={r"/*": {"origins": "https://yourdomain.com"}})
+
+
+FILE UPLOADS:
+-------------
+Protections:
+   - File size limit: 10MB
+   - Allowed extensions: png, jpg, jpeg, webp
+   - Files saved to isolated directory
+
+Recommendations:
+   - Scan uploads for malware in production
+   - Use CDN for serving files
+   - Clean up old uploads periodically
+
+
+INPUT VALIDATION:
+-----------------
+Current:
+   - Pydantic validates API input
+   - JSON parsing with error handling
+
+Recommendations:
+   - Sanitize text inputs
+   - Limit prompt lengths
+   - Rate limit API endpoints
+
+
+HTTPS:
+------
+Local development uses HTTP (http://localhost:8000)
+Production must use HTTPS:
+   - Cloud platforms provide this automatically
+   - VPS: Use nginx + Let's Encrypt
+
+================================================================================
+                       15. TROUBLESHOOTING GUIDE
+================================================================================
+
+ISSUE 1: Server Won't Start
+---------------------------
+Symptoms: Error messages when running python run.py
+
+Solutions:
+   1. Check Python version: python --version (need 3.10+)
+   2. Activate virtual environment: .venv\Scripts\activate
+   3. Install dependencies: pip install -r requirements.txt
+   4. Check port 8000 not in use: netstat -an | findstr 8000
+
+
+ISSUE 2: Image Generation Fails
+-------------------------------
+Symptoms: "Failed to generate image" error
+
+Solutions:
+   1. Check internet connection (for API mode)
+   2. Verify IMAGE_GEN_MODE in .env
+   3. Check Hugging Face API status
+   4. For local mode: verify GPU memory available
+
+
+ISSUE 3: AI Chat Not Responding
+-------------------------------
+Symptoms: Chat shows error or no response
+
+Solutions:
+   1. Verify GEMINI_API_KEY in .env
+   2. Check API key is valid at https://aistudio.google.com
+   3. Check rate limits not exceeded
+   4. View server logs for specific error
+
+
+ISSUE 4: Background Removal Not Working
+---------------------------------------
+Symptoms: Uploaded image not processed
+
+Solutions:
+   1. Check image is PNG or JPG
+   2. File size under 10MB
+   3. First run downloads model (~170MB) - wait
+   4. Check server logs for memory issues
+
+
+ISSUE 5: Compliance Check Returns 404
+-------------------------------------
+Symptoms: /check-guidelines returns not found
+
+Solutions:
+   - Endpoint was added in recent update
+   - Restart server after code update
+   - Check main.py has the endpoint
+
+
+ISSUE 6: Slow Image Generation
+------------------------------
+Symptoms: Takes minutes instead of seconds
+
+Solutions:
+   API Mode:
+   - Hugging Face may be busy - try again
+   - Use SDXL Turbo for faster results
+   
+   Local Mode:
+   - Use smaller model (SD 1.5)
+   - Reduce image size
+   - Check GPU is being used (not CPU)
+
+
+ISSUE 7: Module Import Errors
+-----------------------------
+Symptoms: ModuleNotFoundError
+
+Solutions:
+   1. Activate virtual environment
+   2. Run: pip install -r requirements.txt
+   3. Check Python path includes backend/
+
+
+ISSUE 8: CUDA/GPU Errors
+------------------------
+Symptoms: CUDA out of memory or DLL errors
+
+Solutions:
+   1. Close other GPU applications
+   2. Use smaller model or lower resolution
+   3. Set IMAGE_GEN_MODE=api to skip local models
+   4. For Windows: reinstall CUDA toolkit
+
+================================================================================
+                       16. FUTURE IMPROVEMENTS
+================================================================================
+
+PLANNED FEATURES:
+-----------------
+1. Background Removal API
+   - Replace local rembg with API version
+   - Enable fully cloud-native deployment
+
+2. User Authentication
+   - Login/registration system
+   - Save projects to user account
+   - Team collaboration
+
+3. Template Marketplace
+   - Browse community templates
+   - Share your templates
+   - Premium templates
+
+4. Advanced Analytics
+   - A/B testing for creatives
+   - Performance predictions
+   - Click-through rate estimates
+
+5. Video Generation
+   - Animated creatives
+   - Short video ads
+   - Motion graphics
+
+6. More AI Models
+   - Latest Stable Diffusion versions
+   - Specialized models for products
+   - Fine-tuned models for retail
+
+
+TECHNICAL IMPROVEMENTS:
+-----------------------
+1. Database Integration
+   - PostgreSQL for production
+   - User data persistence
+   - Project storage
+
+2. Caching Layer
+   - Redis for API responses
+   - Image caching
+   - Session management
+
+3. CDN Integration
+   - CloudFlare or AWS CloudFront
+   - Faster asset delivery
+   - Global availability
+
+4. Testing Suite
+   - Unit tests for services
+   - Integration tests for API
+   - E2E tests for frontend
+
+5. API Documentation
+   - Swagger/OpenAPI specs
+   - Interactive documentation
+   - Client SDKs
+
+================================================================================
+                         17. GLOSSARY OF TERMS
+================================================================================
+
+AI/ML Terms:
+------------
+SDXL: Stable Diffusion XL - State-of-the-art image generation model
+SD3: Stable Diffusion 3 - Latest version with improved quality
+FLUX: Fast image generation model by Black Forest Labs
+Diffusers: Hugging Face library for diffusion models
+PyTorch: Deep learning framework by Meta
+CUDA: NVIDIA's parallel computing platform for GPU
+VRAM: Video RAM - Memory on your graphics card
+U2-Net: Neural network for image segmentation (background removal)
+Gemini: Google's large language model
+LLM: Large Language Model - AI that understands/generates text
+
+Web Development:
+----------------
+Flask: Python web framework
+CORS: Cross-Origin Resource Sharing - Browser security feature
+API: Application Programming Interface
+REST: Representational State Transfer - API style
+JSON: JavaScript Object Notation - Data format
+Base64: Encoding for binary data as text
+WebP: Modern image format by Google
+HTTPS: Secure HTTP with encryption
+
+Cloud/Deployment:
+-----------------
+Render: Cloud platform for web applications
+Railway: Developer-focused cloud platform
+Vercel: Platform for frontend and serverless
+Docker: Container platform for deployment
+VPS: Virtual Private Server
+
+Project-Specific:
+-----------------
+Creative: An advertising image/design
+Canvas: The editing workspace
+Layer: Individual element in the design
+Compliance: Following platform advertising rules
+Export: Saving the final design as a file
+Hybrid Mode: Automatic switching between local and API
+
+================================================================================
+                              END OF DOCUMENTATION
+================================================================================
+
+Created: January 3, 2026
+Last Updated: January 3, 2026
+Version: 2.0 (Hybrid Mode)
+
+For questions or support, refer to the README.md or raise an issue in the 
+repository.
+
+================================================================================

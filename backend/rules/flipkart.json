@@ -1,0 +1,40 @@
+{
+  "retailer": "flipkart",
+  "name": "Flipkart Ad Creative Guidelines",
+  "version": "2024.1",
+  "rules": {
+    "logo": {
+      "min_width": 80,
+      "min_height": 35,
+      "max_width_percent": 0.2,
+      "safe_zone_margin": 15,
+      "allowed_positions": ["top-left", "top-right"],
+      "required": true
+    },
+    "text": {
+      "headline_min_font_size": 22,
+      "body_min_font_size": 14,
+      "max_coverage_percent": 35,
+      "min_contrast_ratio": 4.0,
+      "allowed_fonts": ["Roboto", "Arial", "Helvetica"],
+      "max_lines": 4
+    },
+    "layout": {
+      "safe_margin_px": 25,
+      "min_product_size_percent": 35,
+      "max_elements": 12,
+      "required_whitespace_percent": 10
+    },
+    "colors": {
+      "min_contrast": 4.0,
+      "max_colors": 6,
+      "recommended_colors": ["#2874F0", "#FFFFFF"]
+    },
+    "image": {
+      "min_resolution": [800, 600],
+      "max_file_size_mb": 8,
+      "allowed_formats": ["PNG", "JPEG", "WEBP"],
+      "dpi": 72
+    }
+  }
+}
