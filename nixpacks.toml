@@ -2,10 +2,14 @@
 
 [phases.setup]
 nixPkgs = ["python311"]
-aptPkgs = ["python3-pip"]
+aptPkgs = ["python3-pip", "python3-venv"]
 
 [phases.install]
-cmds = ["pip3 install --upgrade pip setuptools wheel", "pip3 install -r requirements.txt"]
+cmds = [
+    "python3 -m venv /opt/venv",
+    "/opt/venv/bin/pip install --upgrade pip setuptools wheel",
+    "/opt/venv/bin/pip install -r requirements.txt"
+]
 
 [start]
 cmd = "bash start.sh"

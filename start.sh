@@ -1,2 +1,3 @@
 #!/bin/bash
-cd backend && python3 -m app.main
+source /opt/venv/bin/activate
+cd backend && python -m app.main
