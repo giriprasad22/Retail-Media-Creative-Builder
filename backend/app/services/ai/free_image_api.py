@@ -36,10 +36,10 @@ class FreeImageAPI:
     }
     
     def __init__(self):
-        self.api_url = "https://api-inference.huggingface.co/models/"
+        self.api_url = "https://router.huggingface.co/models/"
         # Optional: Add HF token for faster inference (not required)
         self.hf_token = os.getenv("HF_TOKEN", "")
-        logger.info("Free Image API initialized (Hugging Face)")
+        logger.info("Free Image API initialized (Hugging Face Router)")
         
     def generate(
         self,

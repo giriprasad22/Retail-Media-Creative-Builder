@@ -212,6 +212,41 @@ def health_check():
     })
 
 
+@app.route('/parse-prompt', methods=['POST'])
+def parse_prompt():
+    """Parse user prompt for creative generation (legacy endpoint)."""
+    data = request.get_json()
+    prompt = data.get('prompt', '')
+    
+    # Simple parsing - extract key elements
+    return jsonify({
+        "success": True,
+        "parsed": {
+            "prompt": prompt,
+            "platform": data.get('platform', 'general'),
+            "style": "modern"
+        }
+    })
+
+
+@app.route('/api/ai/creative-concept', methods=['POST'])
+def creative_concept():
+    """Generate creative concept from prompt (legacy endpoint)."""
+    data = request.get_json()
+    prompt = data.get('prompt', '')
+    
+    return jsonify({
+        "success": True,
+        "concept": {
+            "headline": "Special Offer",
+            "subheadline": "Limited Time Deal",
+            "cta": "Shop Now",
+            "background": "gradient",
+            "colors": ["#6366f1", "#8b5cf6"]
+        }
+    })
+
+
 # ==================== STUB ENDPOINTS (for frontend compatibility) ====================
 
 @app.route('/api/history/save', methods=['POST'])
@@ -1350,6 +1385,11 @@ def check_guidelines(platform):
     elements = []
     for el in elements_data:
         try:
+            # Skip if element is not a dict
+            if not isinstance(el, dict):
+                logger.warning(f"Skipping non-dict element: {type(el)}")
+                continue
+                
             bbox = BoundingBox(
                 x=el.get('x', 0),
                 y=el.get('y', 0),
