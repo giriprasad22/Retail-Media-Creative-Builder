@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Template Library - AI Creative Builder</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="css/variables.css">
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/templates.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="nav-container">
+            <a href="index_new.html" class="nav-logo">
+                <div class="nav-logo-icon">
+                    <i class="fas fa-bolt"></i>
+                </div>
+                <span class="nav-logo-text">AI Creative Builder</span>
+            </a>
+            
+            <div class="nav-links">
+                <a href="index_new.html" class="nav-link">
+                    <i class="fas fa-home"></i>
+                    Home
+                </a>
+                <a href="templates.html" class="nav-link active">
+                    <i class="fas fa-palette"></i>
+                    Templates
+                </a>
+                <a href="#" class="nav-link">
+                    <i class="fas fa-folder"></i>
+                    My Projects
+                </a>
+            </div>
+            
+            <div class="nav-actions">
+                <button class="btn btn-primary" onclick="window.location.href='index_new.html'">
+                    <i class="fas fa-plus"></i>
+                    Create New
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content" style="padding-top: calc(70px + var(--spacing-8));">
+        <div class="container">
+            <!-- Page Header -->
+            <div class="page-header">
+                <div class="page-header-content">
+                    <h1 class="page-title">
+                        <span class="gradient-text">Template Library</span>
+                    </h1>
+                    <p class="page-description">
+                        Choose from our collection of professionally designed templates. 
+                        Customize them with AI or start from scratch.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Template Gallery -->
+            <div id="templateGallery">
+                <!-- Gallery will be rendered here by JavaScript -->
+            </div>
+
+            <!-- Empty State (if no templates) -->
+            <div class="empty-state" id="emptyState" style="display: none;">
+                <div class="empty-state-icon">
+                    <i class="fas fa-palette"></i>
+                </div>
+                <h3>No templates found</h3>
+                <p>Try a different search term or category</p>
+            </div>
+        </div>
+    </main>
+
+    <!-- Template Preview Modal -->
+    <div class="modal-backdrop" id="previewModal">
+        <div class="modal modal-lg">
+            <div class="modal-header">
+                <h3 class="modal-title" id="previewTitle">Template Preview</h3>
+                <button class="modal-close" onclick="closePreviewModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="template-preview-large">
+                    <canvas id="previewCanvas" width="600"></canvas>
+                </div>
+                <div class="template-preview-info">
+                    <div class="template-preview-meta">
+                        <span class="badge badge-primary" id="previewCategory">Amazon</span>
+                        <span class="badge badge-secondary" id="previewSize">1200 × 628</span>
+                    </div>
+                    <p class="template-preview-desc" id="previewDesc">
+                        Professional template designed for maximum impact.
+                    </p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closePreviewModal()">Cancel</button>
+                <button class="btn btn-primary" id="useTemplateBtn">
+                    <i class="fas fa-magic"></i>
+                    Use This Template
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div class="toast-container" id="toast-container"></div>
+
+    <!-- Scripts -->
+    <script src="js/utils.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/toast.js"></script>
+    <script src="js/templates.js"></script>
+    <script>
+        // Initialize template gallery
+        document.addEventListener('DOMContentLoaded', () => {
+            TemplateLibrary.renderGallery('templateGallery', 'all');
+        });
+
+        // Preview modal functions
+        let currentPreviewTemplate = null;
+
+        function openPreviewModal(templateId) {
+            const template = TemplateLibrary.getById(templateId);
+            if (!template) return;
+
+            currentPreviewTemplate = template;
+
+            document.getElementById('previewTitle').textContent = template.name;
+            document.getElementById('previewCategory').textContent = template.category;
+            document.getElementById('previewSize').textContent = 
+                `${template.size.width} × ${template.size.height}`;
+
+            // Render preview
+            const canvas = document.getElementById('previewCanvas');
+            TemplateLibrary.generatePreview(template, canvas);
+
+            // Show modal
+            document.getElementById('previewModal').classList.add('active');
+        }
+
+        function closePreviewModal() {
+            document.getElementById('previewModal').classList.remove('active');
+            currentPreviewTemplate = null;
+        }
+
+        // Use template from modal
+        document.getElementById('useTemplateBtn').addEventListener('click', () => {
+            if (currentPreviewTemplate) {
+                TemplateLibrary.useTemplate(currentPreviewTemplate);
+            }
+        });
+
+        // Close modal on backdrop click
+        document.getElementById('previewModal').addEventListener('click', (e) => {
+            if (e.target.classList.contains('modal-backdrop')) {
+                closePreviewModal();
+            }
+        });
+
+        // Close modal on Escape
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closePreviewModal();
+            }
+        });
+    </script>
+
+    <style>
+        .page-header {
+            text-align: center;
+            margin-bottom: var(--spacing-12);
+        }
+
+        .page-title {
+            font-size: var(--text-5xl);
+            font-weight: var(--font-extrabold);
+            margin-bottom: var(--spacing-4);
+        }
+
+        .page-description {
+            font-size: var(--text-xl);
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .template-preview-large {
+            background: var(--dark-card);
+            border-radius: var(--radius-xl);
+            padding: var(--spacing-6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: var(--spacing-6);
+        }
+
+        .template-preview-large canvas {
+            max-width: 100%;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .template-preview-info {
+            text-align: center;
+        }
+
+        .template-preview-meta {
+            display: flex;
+            justify-content: center;
+            gap: var(--spacing-3);
+            margin-bottom: var(--spacing-4);
+        }
+
+        .template-preview-desc {
+            color: var(--text-secondary);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: var(--spacing-16);
+        }
+
+        .empty-state-icon {
+            width: 80px;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--dark-card);
+            border-radius: 50%;
+            margin: 0 auto var(--spacing-6);
+            font-size: 2rem;
+            color: var(--text-muted);
+        }
+
+        .empty-state h3 {
+            font-size: var(--text-xl);
+            margin-bottom: var(--spacing-2);
+        }
+
+        .empty-state p {
+            color: var(--text-muted);
+        }
+
+        /* Nav active state */
+        .nav-link.active {
+            color: var(--primary-400);
+        }
+    </style>
+
+    <!-- JavaScript Modules -->
+    <script src="js/utils.js"></script>
+    <script src="js/toast.js"></script>
+    <script src="js/templates.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
