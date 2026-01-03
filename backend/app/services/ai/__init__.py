@@ -45,79 +45,53 @@ from .unified_agent import (
     Language
 )
 
-# Stable Diffusion (optional - may fail if diffusers not properly installed)
-try:
-    from .stable_diffusion import (
-        StableDiffusionService,
-        get_stable_diffusion_service,
-        SDBackend,
-        SDModel,
-        GenerationParams,
-        GenerationResult
-    )
-    STABLE_DIFFUSION_AVAILABLE = True
-except (ImportError, RuntimeError) as e:
-    logger.warning(f"Stable Diffusion not available: {e}")
-    STABLE_DIFFUSION_AVAILABLE = False
-    StableDiffusionService = None
-    get_stable_diffusion_service = None
-    SDBackend = None
-    SDModel = None
-    GenerationParams = None
-    GenerationResult = None
+# ============ DISABLED FOR RAILWAY DEPLOYMENT ============
+# These require torch/diffusers which are too heavy for Railway
+# Stable Diffusion, Multi-model, Advanced generator - all disabled
 
-# Multi-model generator (optional - depends on stable_diffusion)
-try:
-    from .multi_model_generator import (
-        MultiModelGenerator
-    )
-    MULTI_MODEL_AVAILABLE = True
-except (ImportError, RuntimeError) as e:
-    logger.warning(f"Multi-model generator not available: {e}")
-    MULTI_MODEL_AVAILABLE = False
-    MultiModelGenerator = None
+STABLE_DIFFUSION_AVAILABLE = False
+StableDiffusionService = None
+get_stable_diffusion_service = None
+SDBackend = None
+SDModel = None
+GenerationParams = None
+GenerationResult = None
+logger.info("Stable Diffusion disabled - not needed for Railway deployment")
 
-# Advanced image generator (optional - depends on diffusers)
-try:
-    from .advanced_image_generator import (
-        get_advanced_generator,
-        AdvancedImageGenerator,
-        ModelType
-    )
-    ADVANCED_GENERATOR_AVAILABLE = True
-except (ImportError, RuntimeError) as e:
-    logger.warning(f"Advanced image generator not available: {e}")
-    ADVANCED_GENERATOR_AVAILABLE = False
-    get_advanced_generator = None
-    AdvancedImageGenerator = None
-    ModelType = None
+MULTI_MODEL_AVAILABLE = False
+MultiModelGenerator = None
+logger.info("Multi-model generator disabled - not needed for Railway deployment")
 
-# Hybrid Image Generator (AUTO-SWITCHES: Local ↔ API)
-from .hybrid_image_gen import (
-    HybridImageGenerator,
-    get_hybrid_generator
-)
+ADVANCED_GENERATOR_AVAILABLE = False
+get_advanced_generator = None
+AdvancedImageGenerator = None
+ModelType = None
+logger.info("Advanced image generator disabled - not needed for Railway deployment")
 
-# Free Image API (for cloud deployment)
-from .free_image_api import (
-    FreeImageAPI,
-    get_free_image_api
-)
+# Hybrid Image Generator - disabled (requires HuggingFace API)
+HybridImageGenerator = None
+get_hybrid_generator = None
+logger.info("Hybrid image generator disabled - no HuggingFace API")
+
+# Free Image API - disabled (requires external APIs)
+FreeImageAPI = None
+get_free_image_api = None
+logger.info("Free image API disabled")
 
 __all__ = [
-    # Background Removal
+    # Background Removal - WORKS
     "BackgroundRemovalService",
     "get_background_removal_service",
     "RembgModel",
     "RemovalResult",
     
-    # Gemini LLM Service (replaces Ollama)
+    # Gemini LLM Service - WORKS (if GEMINI_API_KEY set)
     "GeminiService",
     "get_gemini_service",
     "GeminiModel",
     "GeminiResponse",
     
-    # Unified AI Agent
+    # Unified AI Agent - WORKS
     "UnifiedAIAgent",
     "get_unified_agent",
     "DocumentModel",
@@ -128,30 +102,6 @@ __all__ = [
     "Suggestion",
     "EditIntent",
     "Language",
-    
-    # Stable Diffusion
-    "StableDiffusionService",
-    "get_stable_diffusion_service",
-    "SDBackend",
-    "SDModel",
-    "GenerationParams",
-    "GenerationResult",
-    
-    # Multi-model generator (optional)
-    "MultiModelGenerator",
-    
-    # Advanced image generator (optional)
-    "get_advanced_generator",
-    "AdvancedImageGenerator",
-    "ModelType",
-    
-    # Hybrid Image Generator (recommended)
-    "HybridImageGenerator",
-    "get_hybrid_generator",
-    
-    # Free Image API
-    "FreeImageAPI",
-    "get_free_image_api",
     
     # Availability flags
     "STABLE_DIFFUSION_AVAILABLE",

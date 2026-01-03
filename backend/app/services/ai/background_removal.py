@@ -61,12 +61,12 @@ class BackgroundRemovalService:
     - Transparent PNG output
     """
     
-    def __init__(self, model: str = RembgModel.ISNET_GENERAL_USE):
+    def __init__(self, model: str = RembgModel.SILUETA):
         """
         Initialize background removal service.
         
         Args:
-            model: rembg model to use
+            model: rembg model to use (silueta is lightweight ~4MB)
         """
         self.model_name = model
         self.session = None
@@ -294,7 +294,7 @@ def get_background_removal_service(model: str = None) -> BackgroundRemovalServic
     
     if _bg_removal_service is None:
         _bg_removal_service = BackgroundRemovalService(
-            model=model or RembgModel.ISNET_GENERAL_USE
+            model=model or RembgModel.SILUETA  # Use silueta - only ~4MB
         )
     
     return _bg_removal_service

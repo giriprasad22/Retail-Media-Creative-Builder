@@ -9,9 +9,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libxext6 \
     libxrender1 \
     libgomp1 \
-    libglu1-mesa \
     ffmpeg \
-    && rm -rf /var/lib/apt/lists/*
+    && rm -rf /var/lib/apt/lists/* \
+    && apt-get clean
 
 # Set working directory
 WORKDIR /app
@@ -19,9 +19,10 @@ WORKDIR /app
 # Copy requirements first for better caching
 COPY requirements.txt .
 
-# Install Python dependencies
+# Install Python dependencies with memory optimization
 RUN pip install --no-cache-dir --upgrade pip && \
-    pip install --no-cache-dir -r requirements.txt
+    pip install --no-cache-dir -r requirements.txt && \
+    rm -rf /root/.cache/pip
 
 # Copy the rest of the application
 COPY . .
@@ -29,12 +30,16 @@ COPY . .
 # Create necessary directories
 RUN mkdir -p backend/uploads backend/outputs backend/templates
 
-# Set environment variables
+# Set environment variables for memory optimization
 ENV PYTHONUNBUFFERED=1
 ENV PYTHONDONTWRITEBYTECODE=1
+ENV MALLOC_ARENA_MAX=2
+ENV OMP_NUM_THREADS=1
+ENV OPENBLAS_NUM_THREADS=1
+ENV MKL_NUM_THREADS=1
 
 # Expose port (Railway uses PORT env variable)
 EXPOSE 8080
 
-# Start with 1 worker to reduce memory usage, preload to share model
-CMD ["sh", "-c", "gunicorn --chdir backend app.main:app --bind 0.0.0.0:${PORT:-8080} --workers 1 --timeout 120 --preload"]
+# Start with optimized settings for low memory
+CMD ["sh", "-c", "gunicorn --chdir backend app.main:app --bind 0.0.0.0:${PORT:-8080} --workers 1 --threads 1 --timeout 300 --max-requests 100 --max-requests-jitter 20"]

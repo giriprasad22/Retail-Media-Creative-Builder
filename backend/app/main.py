@@ -1002,7 +1002,7 @@ def remove_background():
             data = request.get_json()
             image_data = data.get('image')
             image_path = data.get('image_path')
-            model = data.get('model', 'u2net')
+            model = data.get('model', 'silueta')  # Use silueta - only ~4MB
             alpha_matting = data.get('alpha_matting', False)
             
             if not image_data and not image_path:
@@ -1028,8 +1028,8 @@ def remove_background():
                 }), 400
             
             file = request.files['file']
-            # Use lighter model for cloud deployment (Railway has limited RAM)
-            model = request.form.get('model', 'u2net_human_seg')  # Lighter than u2net
+            # Use silueta model - only ~4MB vs 176MB u2net
+            model = request.form.get('model', 'silueta')
             # Disable alpha matting to save memory
             alpha_matting = False
             
@@ -1059,8 +1059,8 @@ def remove_background():
                 }), 400
         
         try:
-            # Use lighter model for Railway deployment
-            service = BackgroundRemovalService(model='u2net_human_seg')
+            # Use silueta model - much smaller (~4MB vs 176MB u2net)
+            service = BackgroundRemovalService(model='silueta')
             
             # Remove background with memory-optimized settings
             result = service.remove_background(
@@ -1116,306 +1116,75 @@ def remove_background():
 @app.route('/api/ai/generate/multi-model', methods=['POST'])
 @handle_errors
 def generate_multi_model_image():
-    """
-    Generate image using hybrid generator (API or local)
-    """
-    from app.services.ai.hybrid_image_gen import get_hybrid_generator
-    
-    data = request.get_json()
-    
-    # Extract parameters
-    prompt = data.get('prompt', '')
-    if not prompt:
-        return jsonify({"success": False, "error": "Prompt is required"}), 400
-    
-    negative_prompt = data.get('negative_prompt', 'low quality, blurry, distorted, deformed, ugly')
-    width = data.get('width', 1024)
-    height = data.get('height', 768)
-    style = data.get('style', 'professional')
-    
-    logger.info(f"Starting image generation: {prompt[:50]}...")
-    
-    # Generate with hybrid generator
-    async def generate_async():
-        generator = get_hybrid_generator()
-        return await generator.generate(
-            prompt=prompt,
-            model_type="sdxl",
-            negative_prompt=negative_prompt,
-            width=width,
-            height=height
-        )
-    
-    try:
-        result = run_async(generate_async())
-        
-        if result.get("success"):
-            # Save final image
-            output_filename = f"generated_{uuid.uuid4().hex[:8]}.png"
-            output_path = OUTPUT_DIR / output_filename
-            result["image"].save(output_path)
-            
-            return jsonify({
-                "success": True,
-                "image_url": f"/outputs/{output_filename}",
-                "model_used": result.get("model", "sdxl"),
-                "mode": result.get("mode", "hybrid"),
-                "message": f"Generated using {result.get('mode', 'hybrid')} mode"
-            })
-        else:
-            return jsonify({
-                "success": False,
-                "error": result.get("error", "Generation failed")
-            }), 500
-        
-    except Exception as e:
-        logger.error(f"Image generation failed: {e}")
-        return jsonify({
-            "success": False,
-            "error": str(e)
-        }), 500
+    """Image generation disabled - requires HuggingFace API or local GPU"""
+    return jsonify({
+        "success": False,
+        "error": "Image generation is disabled. This feature requires HuggingFace API. Background removal, editor, and export features work normally."
+    }), 503
 
 
 @app.route('/api/ai/generate/pipeline-info', methods=['GET'])
 @handle_errors
 def get_pipeline_info():
-    """Get information about the multi-model pipeline."""
-    from app.services.ai.multi_model_generator import MultiModelGenerator
-    
-    generator = MultiModelGenerator()
-    info = generator.get_pipeline_info()
-    
+    """Get information about the multi-model pipeline - disabled."""
     return jsonify({
         "success": True,
-        "pipeline": info
+        "pipeline": {
+            "status": "disabled",
+            "message": "Image generation pipeline disabled - requires HuggingFace API"
+        }
     })
 
 
-# ==================== ADVANCED IMAGE GENERATION (SDXL, SD3, FLUX) ====================
+# ==================== ADVANCED IMAGE GENERATION (DISABLED - Requires HuggingFace) ====================
+# NOTE: All image generation endpoints require HuggingFace API or local GPU
+# Background removal, editor, export, and Gemini AI chat still work normally
+
+def _image_gen_disabled_response():
+    """Standard response for disabled image generation endpoints."""
+    return jsonify({
+        "success": False,
+        "error": "Image generation is disabled. This feature requires HuggingFace API or local GPU. Background removal, editor, templates, and export features work normally."
+    }), 503
+
 
 @app.route('/api/ai/generate/sdxl', methods=['POST'])
 @handle_errors
 def generate_with_sdxl():
-    """
-    Generate image using SDXL - Best free model, Sora-level quality
-    
-    ✔ 100% free
-    ✔ No API key
-    ✔ Photorealistic quality
-    ✔ 8GB+ VRAM recommended (or uses free API in cloud)
-    """
-    from app.services.ai.hybrid_image_gen import get_hybrid_generator
-    
-    data = request.get_json()
-    prompt = data.get('prompt', '')
-    if not prompt:
-        return jsonify({"success": False, "error": "Prompt is required"}), 400
-    
-    # Get style parameter (default to photorealistic)
-    style = data.get('style', 'photorealistic')
-    
-    async def generate():
-        generator = get_hybrid_generator()
-        return await generator.generate(
-            prompt=prompt,
-            model_type="sdxl",
-            negative_prompt=data.get('negative_prompt', ''),
-            width=data.get('width', 1024),
-            height=data.get('height', 1024),
-            num_inference_steps=data.get('steps', 30),
-            guidance_scale=data.get('guidance_scale', 7.5),
-            style=style
-        )
-    
-    result = run_async(generate())
-    
-    if result.get('success'):
-        output_filename = f"sdxl_{uuid.uuid4().hex[:8]}.png"
-        output_path = OUTPUT_DIR / output_filename
-        result["image"].save(output_path)
-        
-        return jsonify({
-            "success": True,
-            "image_url": f"/outputs/{output_filename}",
-            "model": result["model"],
-            "resolution": result["resolution"],
-            "style_applied": result.get("style_applied", style),
-            "prompt_used": result.get("prompt_used", prompt)
-        })
-    else:
-        return jsonify(result), 500
+    """SDXL generation - disabled"""
+    return _image_gen_disabled_response()
 
 
 @app.route('/api/ai/generate/sd3', methods=['POST'])
 @handle_errors
 def generate_with_sd3():
-    """
-    Generate image using SD3 - Newest, exceptional quality
-    
-    ✔ 100% free
-    ✔ No API key
-    ✔ Near commercial quality
-    ✔ 16GB+ VRAM recommended (or uses free API in cloud)
-    """
-    from app.services.ai.hybrid_image_gen import get_hybrid_generator
-    
-    data = request.get_json()
-    prompt = data.get('prompt', '')
-    if not prompt:
-        return jsonify({"success": False, "error": "Prompt is required"}), 400
-    
-    # Get style parameter (default to cinematic for SD3)
-    style = data.get('style', 'cinematic')
-    
-    async def generate():
-        generator = get_hybrid_generator()
-        return await generator.generate(
-            prompt=prompt,
-            model_type="sd3",
-            negative_prompt=data.get('negative_prompt', ''),
-            width=data.get('width', 1024),
-            height=data.get('height', 1024),
-            num_inference_steps=data.get('steps', 28),
-            guidance_scale=data.get('guidance_scale', 7.0)
-        )
-    
-    result = run_async(generate())
-    
-    if result.get('success'):
-        output_filename = f"sd3_{uuid.uuid4().hex[:8]}.png"
-        output_path = OUTPUT_DIR / output_filename
-        result["image"].save(output_path)
-        
-        return jsonify({
-            "success": True,
-            "image_url": f"/outputs/{output_filename}",
-            "model": result["model"],
-            "resolution": result["resolution"],
-            "style_applied": result.get("style_applied", style),
-            "prompt_used": result.get("prompt_used", prompt)
-        })
-    else:
-        return jsonify(result), 500
+    """SD3 generation - disabled"""
+    return _image_gen_disabled_response()
 
 
 @app.route('/api/ai/generate/flux', methods=['POST'])
 @handle_errors
 def generate_with_flux():
-    """
-    Generate image using FLUX.1 - SOTA, closest to Sora quality
-    
-    ✔ 100% free
-    ✔ No API key
-    ✔ Hyper-realistic output
-    ✔ 12GB+ VRAM recommended (or uses free API in cloud)
-    """
-    from app.services.ai.hybrid_image_gen import get_hybrid_generator
-    
-    data = request.get_json()
-    prompt = data.get('prompt', '')
-    if not prompt:
-        return jsonify({"success": False, "error": "Prompt is required"}), 400
-    
-    # Get style parameter (default to hyper-realistic for FLUX)
-    style = data.get('style', 'hyper-realistic')
-    
-    async def generate():
-        generator = get_hybrid_generator()
-        return await generator.generate(
-            prompt=prompt,
-            model_type="flux",
-            width=data.get('width', 1024),
-            height=data.get('height', 1024),
-            num_inference_steps=data.get('steps', 25),
-            guidance_scale=data.get('guidance_scale', 3.5)
-        )
-    
-    result = run_async(generate())
-    
-    if result.get('success'):
-        output_filename = f"flux_{uuid.uuid4().hex[:8]}.png"
-        output_path = OUTPUT_DIR / output_filename
-        result["image"].save(output_path)
-        
-        return jsonify({
-            "success": True,
-            "image_url": f"/outputs/{output_filename}",
-            "model": result["model"],
-            "resolution": result["resolution"],
-            "style_applied": result.get("style_applied", style),
-            "prompt_used": result.get("prompt_used", prompt)
-        })
-    else:
-        return jsonify(result), 500
+    """FLUX generation - disabled"""
+    return _image_gen_disabled_response()
 
 
 @app.route('/api/ai/generate/auto', methods=['POST'])
 @handle_errors
 def generate_auto():
-    """
-    Auto-select the best available model based on system capabilities.
-    
-    Quality levels:
-    - fast: SDXL Turbo (3s)
-    - balanced: SDXL (15s)
-    - best: FLUX.1 → SD3 → SDXL (tries best first, or uses API in cloud)
-    """
-    from app.services.ai.hybrid_image_gen import get_hybrid_generator
-    
-    data = request.get_json()
-    prompt = data.get('prompt', '')
-    if not prompt:
-        return jsonify({"success": False, "error": "Prompt is required"}), 400
-    
-    quality = data.get('quality', 'balanced')  # fast, balanced, best
-    style = data.get('style', 'photorealistic')  # User-selected visual style
-    
-    async def generate():
-        generator = get_hybrid_generator()
-        # Map quality to model type
-        model_map = {"fast": "sdxl_turbo", "balanced": "sdxl", "best": "flux"}
-        model_type = model_map.get(quality, "sdxl")
-        
-        return await generator.generate(
-            prompt=prompt,
-            model_type=model_type,
-            negative_prompt=data.get('negative_prompt', ''),
-            width=data.get('width', 1024),
-            height=data.get('height', 1024)
-        )
-    
-    result = run_async(generate())
-    
-    if result.get('success'):
-        output_filename = f"auto_{uuid.uuid4().hex[:8]}.png"
-        output_path = OUTPUT_DIR / output_filename
-        result["image"].save(output_path)
-        
-        return jsonify({
-            "success": True,
-            "image_url": f"/outputs/{output_filename}",
-            "model": result["model"],
-            "resolution": result["resolution"],
-            "style_applied": result.get("style_applied", style),
-            "quality_level": quality,
-            "prompt_used": result.get("prompt_used", prompt)
-        })
-    else:
-        return jsonify(result), 500
+    """Auto image generation - disabled"""
+    return _image_gen_disabled_response()
 
 
 @app.route('/api/ai/generate/models', methods=['GET'])
 @handle_errors
 def get_available_models():
-    """Get information about all available image generation models."""
-    from app.services.ai.hybrid_image_gen import get_hybrid_generator
-    
-    generator = get_hybrid_generator()
-    models_info = generator.get_available_models()
-    
+    """Get information about image generation models - disabled."""
     return jsonify({
         "success": True,
-        **models_info
+        "models": [],
+        "status": "disabled",
+        "message": "Image generation is disabled. This feature requires HuggingFace API."
     })
 
 
