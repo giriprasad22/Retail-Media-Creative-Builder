@@ -7,6 +7,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="css/ai-panel.css">
+    <link rel="stylesheet" href="css/tesco.css">
     <style>
         :root {
             --primary: #6366f1;
@@ -202,6 +203,35 @@
         .project-name {
             font-size: 1.1rem;
             font-weight: 600;
+        }
+
+        .platform-select {
+            padding: 0.5rem 1rem;
+            background: var(--dark-card);
+            border: 1px solid var(--dark-border);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-size: 0.85rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            outline: none;
+        }
+
+        .platform-select:hover {
+            border-color: rgba(99, 102, 241, 0.5);
+            background: rgba(99, 102, 241, 0.1);
+        }
+
+        .platform-select:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        }
+
+        .platform-select option {
+            background: var(--dark-card);
+            color: var(--text-primary);
+            padding: 0.5rem;
         }
 
         .header-center {
@@ -2251,6 +2281,13 @@
                     Back
                 </a>
                 <span class="project-name" id="projectName">New Creative</span>
+                <select class="platform-select" id="platformSelect" onchange="changePlatform(this.value)" title="Select Platform">
+                    <option value="amazon">Amazon</option>
+                    <option value="flipkart">Flipkart</option>
+                    <option value="dmart">DMart</option>
+                    <option value="tesco">Tesco</option>
+                    <option value="general">General</option>
+                </select>
             </div>
             <div class="header-center">
                 <div class="tool-group">
@@ -2292,10 +2329,10 @@
                     </button>
                 </div>
                 <div class="history-controls">
-                    <button class="history-btn" id="undoBtn" onclick="if(window.aiAgent) aiAgent.undo(); else if(window.editor) editor.undo();" title="Undo (Ctrl+Z)">
+                    <button class="history-btn" id="undoBtn" onclick="undo()" title="Undo (Ctrl+Z)">
                         <i class="fas fa-undo"></i>
                     </button>
-                    <button class="history-btn" id="redoBtn" onclick="if(window.aiAgent) aiAgent.redo(); else if(window.editor) editor.redo();" title="Redo (Ctrl+Y)">
+                    <button class="history-btn" id="redoBtn" onclick="redo()" title="Redo (Ctrl+Y)">
                         <i class="fas fa-redo"></i>
                     </button>
                 </div>
@@ -2534,6 +2571,68 @@
                         <div class="palette-color" style="background: #000000;" onclick="setElementColor('#000000')"></div>
                         <div class="palette-color" style="background: #64748b;" onclick="setElementColor('#64748b')"></div>
                     </div>
+                </div>
+
+                <!-- Tesco Elements Section -->
+                <div class="effects-section" id="tescoElementsSection" style="display: none;">
+                    <div class="effects-title">
+                        <i class="fas fa-shopping-cart" style="color: #0050AA; margin-right: 0.5rem;"></i>
+                        Tesco Elements
+                    </div>
+                    
+                    <!-- Tesco Value Tiles -->
+                    <div class="subsection-title" style="font-size: 0.75rem; color: var(--text-muted); margin: 1rem 0 0.5rem; text-transform: uppercase;">Value Tiles</div>
+                    <div class="text-presets-grid">
+                        <div class="text-preset" onclick="addTescoValueTile('new')">
+                            <div class="text-preset-preview" style="--preset-size: 16px; --preset-weight: 700; --preset-color: #0050AA; background: #ffffff; padding: 8px; border-radius: 4px;">NEW</div>
+                            <div class="text-preset-name">New Tile</div>
+                        </div>
+                        <div class="text-preset" onclick="addTescoValueTile('white')">
+                            <div class="text-preset-preview" style="--preset-size: 18px; --preset-weight: 700; --preset-color: #0050AA; background: #ffffff; padding: 8px; border-radius: 4px;">£9.99</div>
+                            <div class="text-preset-name">Price Tile</div>
+                        </div>
+                        <div class="text-preset" onclick="addTescoValueTile('clubcard')">
+                            <div class="text-preset-preview" style="--preset-size: 14px; --preset-weight: 700; --preset-color: #ffffff; background: #0050AA; padding: 8px; border-radius: 4px;">£7.99<br><span style="font-size: 10px;">Clubcard</span></div>
+                            <div class="text-preset-name">Clubcard Tile</div>
+                        </div>
+                    </div>
+
+                    <!-- Tesco Tags -->
+                    <div class="subsection-title" style="font-size: 0.75rem; color: var(--text-muted); margin: 1rem 0 0.5rem; text-transform: uppercase;">Tesco Tags</div>
+                    <div class="effects-grid">
+                        <button class="effect-btn" onclick="addTescoTag('only')">
+                            <i class="fas fa-star"></i>
+                            <span>Only at Tesco</span>
+                        </button>
+                        <button class="effect-btn" onclick="addTescoTag('available')">
+                            <i class="fas fa-shopping-bag"></i>
+                            <span>Available</span>
+                        </button>
+                        <button class="effect-btn" onclick="addTescoTag('selected')">
+                            <i class="fas fa-store"></i>
+                            <span>Selected Stores</span>
+                        </button>
+                        <button class="effect-btn" onclick="addTescoTag('clubcard')">
+                            <i class="fas fa-credit-card"></i>
+                            <span>Clubcard</span>
+                        </button>
+                    </div>
+
+                    <!-- Tesco Brand Colors -->
+                    <div class="subsection-title" style="font-size: 0.75rem; color: var(--text-muted); margin: 1rem 0 0.5rem; text-transform: uppercase;">Tesco Brand Colors</div>
+                    <div class="color-palette">
+                        <div class="palette-color" style="background: #0050AA;" onclick="setElementColor('#0050AA')" title="Tesco Blue"></div>
+                        <div class="palette-color" style="background: #EE1C2E;" onclick="setElementColor('#EE1C2E')" title="Tesco Red"></div>
+                        <div class="palette-color" style="background: #FFFFFF; border: 1px solid var(--dark-border);" onclick="setElementColor('#FFFFFF')" title="White"></div>
+                        <div class="palette-color" style="background: #000000;" onclick="setElementColor('#000000')" title="Black"></div>
+                    </div>
+
+                    <!-- Drinkaware -->
+                    <div class="subsection-title" style="font-size: 0.75rem; color: var(--text-muted); margin: 1rem 0 0.5rem; text-transform: uppercase;">Compliance</div>
+                    <button class="effect-btn" onclick="addDrinkawareLogo()" style="width: 100%;">
+                        <i class="fas fa-glass-martini-alt"></i>
+                        <span>Add Drinkaware Logo</span>
+                    </button>
                 </div>
             </div>
 
@@ -2928,7 +3027,38 @@
             setupKeyboardShortcuts();
             setupAIInput();
             restoreCollapsedStates(); // Restore section collapse states
+            initializePlatform();  // Initialize platform and show/hide relevant elements
         });
+
+        // ============================================
+        // PLATFORM MANAGEMENT
+        // ============================================
+        function initializePlatform() {
+            const savedPlatform = localStorage.getItem('editPlatform') || 'amazon';
+            const platformSelect = document.getElementById('platformSelect');
+            if (platformSelect) {
+                platformSelect.value = savedPlatform;
+            }
+            changePlatform(savedPlatform, false);
+        }
+
+        function changePlatform(newPlatform, showToast = true) {
+            platform = newPlatform;
+            localStorage.setItem('editPlatform', newPlatform);
+            
+            // Show/hide Tesco elements section
+            toggleTescoElements(newPlatform === 'tesco');
+            
+            if (showToast) {
+                showToast(`Switched to ${newPlatform.charAt(0).toUpperCase() + newPlatform.slice(1)} platform`, 'info');
+            }
+            
+            // Update platform select if not already updated
+            const platformSelect = document.getElementById('platformSelect');
+            if (platformSelect && platformSelect.value !== newPlatform) {
+                platformSelect.value = newPlatform;
+            }
+        }
 
         // ============================================
         // COLLAPSIBLE SECTIONS
@@ -3137,9 +3267,7 @@
                             showToast('Cannot erase locked element', 'warning');
                         } else {
                             // Save to history before deleting
-                            if (typeof saveToHistory === 'function') {
-                                saveToHistory();
-                            }
+                            saveToHistory({ action: 'Move Element', elementId: elementToMove.id });
                             // Remove element
                             const index = canvasState.elements.findIndex(el => el.id === elementToErase.id);
                             if (index > -1) {
@@ -3263,20 +3391,20 @@
                     break;
                     
                 case 'crop':
-                    // Find image element under cursor to crop
-                    const imageToCrop = [...canvasState.elements].reverse().find(el => {
-                        return el.visible && el.type === 'image' &&
+                    // Find any element under cursor to crop (images, shapes, buttons)
+                    const elementToCrop = [...canvasState.elements].reverse().find(el => {
+                        return el.visible && (el.type === 'image' || el.type === 'button') &&
                                x >= el.x && x <= el.x + el.width &&
                                y >= el.y && y <= el.y + el.height;
                     });
                     
-                    if (imageToCrop) {
-                        selectElement(imageToCrop);
-                        cropTargetElement = imageToCrop;
+                    if (elementToCrop) {
+                        selectElement(elementToCrop);
+                        cropTargetElement = elementToCrop;
                         isDrawing = true;
                         drawStart = { x, y };
                     } else {
-                        showToast('Click on an image to crop it', 'info');
+                        showToast('Click on an element to crop it', 'info');
                     }
                     break;
             }
@@ -3453,17 +3581,30 @@
             isDrawing = false;
         }
         
-        // Crop an image element
+        // Crop any element (image, button, shape)
         function cropImage(element, cropX, cropY, cropWidth, cropHeight) {
             console.log('cropImage called:', { cropX, cropY, cropWidth, cropHeight });
             console.log('Element before crop:', { x: element.x, y: element.y, w: element.width, h: element.height });
             
-            // Save to history
-            if (typeof saveToHistory === 'function') {
-                saveToHistory();
+            // Save to history before modifying
+            saveToHistory({ action: 'crop', elementId: element.id });
+            
+            // For non-image elements (buttons, shapes), just resize them
+            if (element.type !== 'image') {
+                element.x = Math.round(cropX);
+                element.y = Math.round(cropY);
+                element.width = Math.round(cropWidth);
+                element.height = Math.round(cropHeight);
+                
+                renderCanvas();
+                renderLayers();
+                updatePropertyPanel();
+                saveToHistory({ action: 'crop_complete', elementId: element.id });
+                showToast('Element resized successfully', 'success');
+                return;
             }
             
-            // Relative position within the element (where crop starts on the image)
+            // For image elements, perform actual crop
             const relX = cropX - element.x;
             const relY = cropY - element.y;
             
@@ -3519,6 +3660,7 @@
                     renderCanvas();
                     renderLayers();
                     updatePropertyPanel();
+                    saveToHistory({ action: 'crop_complete', elementId: element.id });
                     showToast('Image cropped successfully', 'success');
                 } catch (err) {
                     console.error('Crop error:', err);
@@ -4081,6 +4223,9 @@
                 historyIndex++;
             }
             
+            // Update button states
+            updateHistoryButtons();
+            
             // Send to backend for persistence
             sendHistoryToBackend();
         }
@@ -4106,8 +4251,10 @@
             if (historyIndex > 0) {
                 historyIndex--;
                 canvasState = JSON.parse(JSON.stringify(historyStack[historyIndex].canvasState));
+                selectedElement = null;
                 renderCanvas();
                 renderLayers();
+                updateHistoryButtons();
                 showToast('Undo successful', 'info');
             } else {
                 showToast('Nothing to undo', 'warning');
@@ -4118,11 +4265,27 @@
             if (historyIndex < historyStack.length - 1) {
                 historyIndex++;
                 canvasState = JSON.parse(JSON.stringify(historyStack[historyIndex].canvasState));
+                selectedElement = null;
                 renderCanvas();
                 renderLayers();
+                updateHistoryButtons();
                 showToast('Redo successful', 'info');
             } else {
                 showToast('Nothing to redo', 'warning');
+            }
+        }
+        
+        function updateHistoryButtons() {
+            const undoBtn = document.getElementById('undoBtn');
+            const redoBtn = document.getElementById('redoBtn');
+            
+            if (undoBtn) {
+                undoBtn.disabled = historyIndex <= 0;
+                undoBtn.style.opacity = historyIndex <= 0 ? '0.5' : '1';
+            }
+            if (redoBtn) {
+                redoBtn.disabled = historyIndex >= historyStack.length - 1;
+                redoBtn.style.opacity = historyIndex >= historyStack.length - 1 ? '0.5' : '1';
             }
         }
 
@@ -6216,7 +6379,15 @@
                             break;
                         case 'z':
                             e.preventDefault();
-                            showToast('Undo not yet implemented', 'info');
+                            if (e.shiftKey) {
+                                redo();
+                            } else {
+                                undo();
+                            }
+                            break;
+                        case 'y':
+                            e.preventDefault();
+                            redo();
                             break;
                         case 'e':
                             e.preventDefault();
@@ -6351,6 +6522,7 @@
             selectElement(newElement);
             renderCanvas();
             renderLayers();
+            saveToHistory({ action: 'Add Text Preset', preset: presetName });
             showToast(`Added ${presetName} text`, 'success');
         }
 
@@ -6431,7 +6603,175 @@
                 selectElement(newElement);
                 renderCanvas();
                 renderLayers();
+                saveToHistory({ action: 'Add Shape', shapeType: shapeType });
                 showToast(`Added ${shapeType}`, 'success');
+            }
+        }
+
+        // ============================================
+        // TESCO ELEMENTS FUNCTIONS
+        // ============================================
+        
+        // Tesco Value Tiles
+        function addTescoValueTile(tileType) {
+            let newElement;
+            const centerX = canvasState.dimensions.width / 2;
+            const centerY = canvasState.dimensions.height / 2;
+
+            switch (tileType) {
+                case 'new':
+                    newElement = {
+                        id: `el-${Date.now()}`,
+                        type: 'button',
+                        name: 'Tesco NEW Tile',
+                        text: 'NEW',
+                        x: centerX - 60,
+                        y: 40,
+                        width: 120,
+                        height: 45,
+                        fontSize: 20,
+                        fontWeight: 700,
+                        color: '#0050AA',
+                        backgroundColor: '#FFFFFF',
+                        borderRadius: 4,
+                        editable: false,
+                        tesco: { type: 'valueTile', subtype: 'new' },
+                        visible: true
+                    };
+                    break;
+                case 'white':
+                    newElement = {
+                        id: `el-${Date.now()}`,
+                        type: 'button',
+                        name: 'Tesco Price Tile',
+                        text: '£9.99',
+                        x: centerX - 70,
+                        y: 40,
+                        width: 140,
+                        height: 50,
+                        fontSize: 28,
+                        fontWeight: 700,
+                        color: '#0050AA',
+                        backgroundColor: '#FFFFFF',
+                        borderRadius: 4,
+                        tesco: { type: 'valueTile', subtype: 'white', editable: true },
+                        visible: true
+                    };
+                    break;
+                case 'clubcard':
+                    newElement = {
+                        id: `el-${Date.now()}`,
+                        type: 'text',
+                        name: 'Clubcard Price Tile',
+                        text: '£7.99\nClubcard Price',
+                        x: centerX - 80,
+                        y: 40,
+                        width: 160,
+                        height: 70,
+                        fontSize: 24,
+                        fontWeight: 700,
+                        color: '#FFFFFF',
+                        backgroundColor: '#0050AA',
+                        borderRadius: 4,
+                        textAlign: 'center',
+                        tesco: { 
+                            type: 'valueTile', 
+                            subtype: 'clubcard', 
+                            editable: true,
+                            requiresEndDate: true 
+                        },
+                        visible: true
+                    };
+                    break;
+            }
+
+            if (newElement) {
+                canvasState.elements.push(newElement);
+                selectElement(newElement);
+                renderCanvas();
+                renderLayers();
+                saveToHistory({ action: 'Add Tesco Value Tile', tileType: tileType });
+                showToast(`Added Tesco ${tileType} value tile`, 'success');
+            }
+        }
+
+        // Tesco Tags
+        function addTescoTag(tagType) {
+            let tagText = '';
+            const centerX = canvasState.dimensions.width / 2;
+            const bottomY = canvasState.dimensions.height - 60;
+
+            switch (tagType) {
+                case 'only':
+                    tagText = 'Only at Tesco';
+                    break;
+                case 'available':
+                    tagText = 'Available at Tesco';
+                    break;
+                case 'selected':
+                    tagText = 'Selected stores. While stocks last';
+                    break;
+                case 'clubcard':
+                    tagText = 'Available in selected stores. Clubcard/app required. Ends DD/MM';
+                    break;
+            }
+
+            const newElement = {
+                id: `el-${Date.now()}`,
+                type: 'text',
+                name: `Tesco Tag: ${tagType}`,
+                text: tagText,
+                x: centerX - 150,
+                y: bottomY,
+                width: 300,
+                height: 30,
+                fontSize: 12,
+                fontWeight: 400,
+                color: '#64748b',
+                textAlign: 'center',
+                tesco: { type: 'tag', approved: true },
+                visible: true
+            };
+
+            canvasState.elements.push(newElement);
+            selectElement(newElement);
+            renderCanvas();
+            renderLayers();
+            saveToHistory({ action: 'Add Tesco Tag', tagType: tagType });
+            showToast(`Added Tesco tag: ${tagText}`, 'success');
+        }
+
+        // Add Drinkaware Logo
+        function addDrinkawareLogo() {
+            const newElement = {
+                id: `el-${Date.now()}`,
+                type: 'text',
+                name: 'Drinkaware',
+                text: 'drinkaware.co.uk',
+                x: canvasState.dimensions.width - 150,
+                y: canvasState.dimensions.height - 50,
+                width: 130,
+                height: 30,
+                fontSize: 12,
+                fontWeight: 500,
+                color: '#000000',
+                tesco: { type: 'drinkaware', mandatory: true, minHeight: 20 },
+                visible: true
+            };
+
+            canvasState.elements.push(newElement);
+            selectElement(newElement);
+            renderCanvas();
+            renderLayers();
+            saveToHistory({ action: 'Add Drinkaware Logo' });
+            showToast('Added Drinkaware logo - Required for alcohol promotions', 'info');
+        }
+
+        // Toggle Tesco Elements Section
+        function toggleTescoElements(show) {
+            const tescoSection = document.getElementById('tescoElementsSection');
+            if (tescoSection) {
+                tescoSection.style.display = show ? 'block' : 'none';
             }
         }
 
